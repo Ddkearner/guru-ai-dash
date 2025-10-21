@@ -58,14 +58,14 @@ export const MeeraAiChatInputSchema = z.object({
 export type MeeraAiChatInput = z.infer<typeof MeeraAiChatInputSchema>;
 
 const TextResponseSchema = z.object({
-  component: z.literal('text'),
+  component: z.enum(['text']),
   props: z.object({
     text: z.string().describe('The text response to the user query.'),
   }),
 });
 
 const TodoListResponseSchema = z.object({
-    component: z.literal('todo-list'),
+    component: z.enum(['todo-list']),
     props: z.object({
         tasks: z.array(TaskSchema).describe('The list of to-do tasks.'),
     }),
