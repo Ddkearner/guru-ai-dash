@@ -23,7 +23,7 @@ const prompt = ai.definePrompt({
   name: 'generateDailySchoolSummaryPrompt',
   input: {schema: GenerateDailySchoolSummaryInputSchema},
   output: {schema: GenerateDailySchoolSummaryOutputSchema},
-  prompt: `You are the principal's AI assistant, providing a daily summary of key school activities.
+  prompt: `You are the principal's AI assistant, providing a daily summary of key school activities. Your summary must be balanced, highlighting both the positive achievements and the challenges of the day.
 
   Today's data:
   - Attendance rate: {{attendanceRate}}%
@@ -33,7 +33,10 @@ const prompt = ai.definePrompt({
   - Classes with low attendance: {{#each lowAttendanceClasses}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}
 
   Write a concise and engaging summary of these activities, suitable for a school principal.
-  Use emojis to make it more lively. Vary the phrasing to make each summary feel fresh.
+  - Start with the positive news (e.g., fee collection, enquiries).
+  - Then, mention the challenges or areas that need attention (e.g., low attendance).
+  - Use emojis to make it more lively.
+  - Vary the phrasing to make each summary feel fresh.
 `,
 });
 

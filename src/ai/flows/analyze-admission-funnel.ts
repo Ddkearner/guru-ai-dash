@@ -31,13 +31,13 @@ const analyzeAdmissionFunnelPrompt = ai.definePrompt({
   - Last Month: {{{json lastMonth}}}
 
   **Analysis Task:**
-  1.  **Calculate Conversion Rates:** For each period (This Month, Last Month), calculate the conversion rate between each stage (e.g., Enquiries to Campus Visits, Campus Visits to Forms Filled, etc.) and the overall conversion rate (Enquiries to Enrolled).
-  2.  **Compare Periods:** Compare the performance of "This Month" against "Last Month". Highlight significant improvements or drops in numbers and conversion rates at each stage.
-  3.  **Identify Bottlenecks:** Pinpoint the stage with the biggest drop-off (the primary bottleneck) for the current month.
-  4.  **Summarize Findings:** Write a concise but detailed analysis covering the points above. Start with a summary of the overall performance, then dive into stage-by-stage details.
+  1.  **Calculate Conversion Rates:** For each period (This Month, Last Month), calculate the conversion rate between each stage and the overall conversion rate.
+  2.  **Compare Periods:** Compare the performance of "This Month" against "Last Month". Highlight both significant improvements (successes) and drops (bottlenecks) in numbers and conversion rates at each stage.
+  3.  **Identify Key Bottleneck and Success:** Pinpoint the stage with the biggest drop-off (the primary bottleneck) and the stage with the highest conversion (a key success) for the current month.
+  4.  **Summarize Findings:** Write a concise but detailed analysis covering the points above. Start with a summary of the overall performance, then dive into stage-by-stage details, clearly mentioning both positives and negatives.
 
   **Suggestions Task:**
-  Based on your analysis, provide a list of 3-4 concrete, actionable, and creative marketing strategies to improve the funnel performance. Tailor your suggestions to address the specific bottlenecks you identified.
+  Based on your analysis, provide a list of 3-4 concrete, actionable, and creative marketing strategies. Tailor your suggestions to address the specific bottlenecks you identified, while also suggesting how to capitalize on the successful stages.
 
   For example, if the bottleneck is between "Enquiries" and "Campus Visits", suggest:
   - "Create a compelling virtual tour video and send it to all new enquiries."

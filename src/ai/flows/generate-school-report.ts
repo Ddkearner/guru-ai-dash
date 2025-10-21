@@ -25,7 +25,7 @@ const generateSchoolReportPrompt = ai.definePrompt({
   name: 'generateSchoolReportPrompt',
   input: { schema: GenerateSchoolReportInputSchema },
   output: { schema: GenerateSchoolReportOutputSchema },
-  prompt: `You are a world-class educational consultant AI. Your task is to generate a comprehensive, insightful, and actionable report for a school principal. The report should be based on a holistic analysis of all the data provided.
+  prompt: `You are a world-class educational consultant AI. Your task is to generate a comprehensive, insightful, and actionable report for a school principal. The report must be balanced, highlighting both strengths and weaknesses.
 
   **Report Scope:** {{scope}} (If not 'school', filter your analysis to the relevant class).
 
@@ -38,16 +38,16 @@ const generateSchoolReportPrompt = ai.definePrompt({
 
   **Your Task:**
 
-  1.  **Generate an Executive Summary:**
+  1.  **Generate a Balanced Executive Summary:**
       - Write a concise, high-level summary of the school's (or class's) overall health.
-      - Touch upon the key areas: growth, admissions, academic performance, and staff morale.
-      - Start with a clear, impactful statement. For example, "Overall, the school is on a positive growth trajectory, but significant bottlenecks in the admission funnel and concerning trends in Class 9 academic performance require immediate attention."
+      - The summary MUST cover both key achievements and critical challenges.
+      - Start with a clear, impactful statement. For example, "Overall, the school shows strong financial growth and teacher morale, but significant bottlenecks in the admission funnel and concerning trends in Class 9 academic performance require immediate attention."
 
-  2.  **Identify Critical Problems:**
-      - Analyze all the data to identify the 3-4 most critical, interconnected problems.
-      - Don't just state facts; connect the dots.
+  2.  **Identify Critical Problems & Key Strengths:**
+      - Analyze all the data to identify the 2-3 most critical problems and 2-3 key strengths.
+      - Connect the dots between different data points.
       -   **Example Problem:** "The 12% drop in conversion from 'Campus Visits' to 'Forms Filled' correlates with a high number of parent complaints about Mr. Singh, suggesting his poor communication during tours may be deterring prospective parents."
-      -   **Example Problem:** "Despite high enquiry numbers from the 'Rampur' area (80 students), admissions from this locality are disproportionately low. This, combined with low exam performance in Class 9, suggests our academic reputation in that specific area might be weak."
+      -   **Example Strength:** "Fee collection is consistently strong, growing by 15% over the last quarter, indicating high parent satisfaction and efficient administrative processes."
 
   3.  **Propose Actionable Solutions:**
       - For each identified problem, provide a clear, creative, and "ground-ready" solution.
@@ -56,9 +56,6 @@ const generateSchoolReportPrompt = ai.definePrompt({
       -   **Example Solution for Admissions Bottleneck:**
           -   \`title\`: "Implement a 'Star Teacher' Campus Tour Program."
           -   \`description\`: "Replace underperforming teachers on campus tours with high-morale, high-performing teachers like Mr. Sharma. Create a script for them that highlights the school's strengths and train them in communication. Track conversion rates for tours led by star teachers to measure impact."
-      -   **Example Solution for Geographic Weakness:**
-          -   \`title\`: "Launch 'Hyperlocal Marketing & Academic Showcase' in Rampur."
-          -   \`description\`: "Run targeted digital ads in Rampur showcasing testimonials from successful students from that area. Simultaneously, organize a free 'Math Olympiad Workshop' led by Mr. Sharma at a community center in Rampur to demonstrate academic excellence and build trust with local parents."
 
   Your final report must be structured, insightful, and empower the principal with a clear path forward.
   `,

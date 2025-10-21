@@ -24,7 +24,7 @@ const generateGrowthStrategiesPrompt = ai.definePrompt({
   name: 'generateGrowthStrategiesPrompt',
   input: { schema: GenerateGrowthStrategiesInputSchema },
   output: { schema: GenerateGrowthStrategiesOutputSchema },
-  prompt: `You are an AI-powered growth strategy consultant for schools. Your task is to analyze historical growth data and provide actionable strategies to a school principal.
+  prompt: `You are an AI-powered growth strategy consultant for schools. Your task is to analyze historical growth data and provide actionable strategies to a school principal. Your analysis must be balanced, highlighting both strengths and weaknesses.
 
   **Data:**
   - Historical Growth Data: {{{json growthData}}}
@@ -35,12 +35,11 @@ const generateGrowthStrategiesPrompt = ai.definePrompt({
   1.  **Analyze the Trend:**
       - Examine the trend for the '{{activeMetric}}' over the months provided.
       - Identify the month with the highest and lowest performance for this metric.
-      - Calculate the percentage growth or decline from the first month to the last month in the data.
-      - Write a short, insightful **Analysis** of these trends. What does the data suggest? Is there a seasonal pattern? Is the growth accelerating or slowing down?
+      - Write a short, insightful **Analysis** of these trends. What does the data suggest? Is the growth accelerating or slowing down? Where are the weaknesses and strengths? For example, "While admission numbers are growing, the enquiry-to-admission conversion rate seems to be dropping, which is a key concern."
 
   2.  **Generate Actionable Strategies:**
       - Based on your analysis and the key metric of focus ('{{activeMetric}}'), provide a list of 3-4 concrete **Suggestions**.
-      - These should be creative, practical, and easy-to-implement strategies, suggestions, or "tricks" for a school setting.
+      - These should be creative, practical, and easy-to-implement strategies. Some should address the weaknesses you found.
 
   **Example Suggestions based on Metric:**
 
