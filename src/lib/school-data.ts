@@ -19,6 +19,19 @@ export type Task = {
   isUserAdded?: boolean;
 };
 
+export type Student = {
+  id: string;
+  name: string;
+  class: string;
+  roll: number;
+  performanceChange: number;
+  image: string | undefined;
+  attendance: number;
+  feeStatus: 'Paid' | 'Pending';
+  grades: { subject: string; score: number }[];
+};
+
+
 export const todoTasks: Task[] = [
   {
     id: 'task1',
@@ -167,7 +180,7 @@ export const examHeatmapData = [
       { name: 'Social Studies', passRate: 75, topScorer: 'Suresh Verma', weakStudents: 12 },
     ],
     toppers: ['Suresh Verma', 'Meena Kumari', 'Arjun Reddy'],
-    weakest: ['Deepak Joshi', 'Lalita Singh', 'Kavita'],
+    weakest: ['Deepak Joshi', 'Lalita Singh', 'Kavita', 'Rahul Kumar', 'Amit Singh'],
     mostFailedSubject: 'Mathematics',
   },
   {
@@ -182,14 +195,14 @@ export const examHeatmapData = [
       { name: 'Social Studies', passRate: 96, topScorer: 'Alok Nath', weakStudents: 2 },
     ],
     toppers: ['Riya Jain', 'Alok Nath', 'Simran'],
-    weakest: ['Vikas', 'Pooja'],
+    weakest: ['Vikas', 'Pooja', 'Sneha Patel'],
     mostFailedSubject: 'English',
   },
 ];
 
 const studentImages = PlaceHolderImages;
 
-export const dropoutData = [
+export const dropoutData: Student[] = [
   { id: 'stud1', name: 'Rahul Kumar', class: '9A', roll: 23, performanceChange: -25, image: studentImages.find(i => i.id === 'student-1')?.imageUrl, attendance: 75, feeStatus: 'Pending', grades: [{subject: 'Math', score: 45}, {subject: 'Science', score: 55}, {subject: 'English', score: 60}, {subject: 'History', score: 50}] },
   { id: 'stud2', name: 'Sneha Patel', class: '8B', roll: 12, performanceChange: -18, image: studentImages.find(i => i.id === 'student-2')?.imageUrl, attendance: 85, feeStatus: 'Paid', grades: [{subject: 'Math', score: 60}, {subject: 'Science', score: 65}, {subject: 'English', score: 70}, {subject: 'History', score: 62}] },
   { id: 'stud3', name: 'Amit Singh', class: '9C', roll: 31, performanceChange: -32, image: studentImages.find(i => i.id === 'student-3')?.imageUrl, attendance: 60, feeStatus: 'Pending', grades: [{subject: 'Math', score: 35}, {subject: 'Science', score: 40}, {subject: 'English', score: 52}, {subject: 'History', score: 45}] },
@@ -198,6 +211,17 @@ export const dropoutData = [
   { id: 'stud6', name: 'Anjali Gupta', class: '10A', roll: 3, image: "https://picsum.photos/seed/stud6/100/100", performanceChange: -15, attendance: 88, feeStatus: 'Paid', grades: [{subject: 'Math', score: 70}, {subject: 'Science', score: 65}, {subject: 'English', score: 80}, {subject: 'History', score: 72}] },
   { id: 'stud7', name: 'Sanjay Dutt', class: '11B', roll: 15, image: "https://picsum.photos/seed/stud7/100/100", performanceChange: -20, attendance: 78, feeStatus: 'Pending', grades: [{subject: 'Physics', score: 50}, {subject: 'Chemistry', score: 58}, {subject: 'Math', score: 62}, {subject: 'English', score: 65}] },
   { id: 'stud8', name: 'Alia Bhatt', class: '12A', roll: 1, image: "https://picsum.photos/seed/stud8/100/100", performanceChange: -10, attendance: 92, feeStatus: 'Paid', grades: [{subject: 'Physics', score: 80}, {subject: 'Chemistry', score: 85}, {subject: 'Math', score: 75}, {subject: 'English', score: 88}] },
+  { id: 'stud9', name: 'Vikas', class: '12C', roll: 45, performanceChange: -5, image: "https://picsum.photos/seed/stud9/100/100", attendance: 91, feeStatus: 'Paid', grades: [{subject: 'Physics', score: 70}, {subject: 'Chemistry', score: 75}, {subject: 'Math', score: 65}, {subject: 'English', score: 80}] },
+  { id: 'stud10', name: 'Pooja', class: '12A', roll: 33, performanceChange: -8, image: "https://picsum.photos/seed/stud10/100/100", attendance: 89, feeStatus: 'Paid', grades: [{subject: 'Physics', score: 65}, {subject: 'Chemistry', score: 72}, {subject: 'Math', score: 60}, {subject: 'English', score: 75}] },
+  { id: 'stud11', name: 'Rohan Mehra', class: '11A', roll: 1, performanceChange: 10, image: "https://picsum.photos/seed/stud11/100/100", attendance: 95, feeStatus: 'Paid', grades: [{subject: 'Physics', score: 95}, {subject: 'Chemistry', score: 92}, {subject: 'Math', score: 98}, {subject: 'English', score: 90}] },
+  { id: 'stud12', name: 'Sneha Verma', class: '11A', roll: 2, performanceChange: 8, image: "https://picsum.photos/seed/stud12/100/100", attendance: 96, feeStatus: 'Paid', grades: [{subject: 'Physics', score: 92}, {subject: 'Chemistry', score: 95}, {subject: 'Math', score: 94}, {subject: 'English', score: 91}] },
+  { id: 'stud13', name: 'Aditi Singh', class: '11B', roll: 3, performanceChange: 7, image: "https://picsum.photos/seed/stud13/100/100", attendance: 94, feeStatus: 'Paid', grades: [{subject: 'Physics', score: 90}, {subject: 'Chemistry', score: 91}, {subject: 'Math', score: 92}, {subject: 'English', score: 95}] },
+  { id: 'stud14', name: 'Rajesh Kumar', class: '11C', roll: 34, performanceChange: -15, image: "https://picsum.photos/seed/stud14/100/100", attendance: 80, feeStatus: 'Pending', grades: [{subject: 'Physics', score: 55}, {subject: 'Chemistry', score: 60}, {subject: 'Math', score: 58}, {subject: 'English', score: 62}] },
+  { id: 'stud15', name: 'Anika Sharma', class: '10A', roll: 1, performanceChange: 12, image: "https://picsum.photos/seed/stud15/100/100", attendance: 98, feeStatus: 'Paid', grades: [{subject: 'Math', score: 98}, {subject: 'Science', score: 95}, {subject: 'English', score: 96}, {subject: 'Social Studies', score: 97}] },
+  { id: 'stud16', name: 'Riya Jain', class: '12A', roll: 2, performanceChange: 6, image: "https://picsum.photos/seed/stud16/100/100", attendance: 97, feeStatus: 'Paid', grades: [{subject: 'Physics', score: 94}, {subject: 'Chemistry', score: 98}, {subject: 'Math', score: 92}, {subject: 'English', score: 95}] },
+  { id: 'stud17', name: 'Alok Nath', class: '12B', roll: 3, performanceChange: 5, image: "https://picsum.photos/seed/stud17/100/100", attendance: 96, feeStatus: 'Paid', grades: [{subject: 'Physics', score: 96}, {subject: 'Chemistry', score: 93}, {subject: 'Math', score: 90}, {subject: 'English', score: 99}] },
+  { id: 'stud18', name: 'Suresh Verma', class: '9A', roll: 1, performanceChange: 2, image: "https://picsum.photos/seed/stud18/100/100", attendance: 94, feeStatus: 'Paid', grades: [{subject: 'Math', score: 90}, {subject: 'Science', score: 88}, {subject: 'English', score: 85}, {subject: 'Social Studies', score: 89}] },
+  { id: 'stud19', name: 'Deepak Joshi', class: '9C', roll: 25, performanceChange: -20, image: "https://picsum.photos/seed/stud19/100/100", attendance: 78, feeStatus: 'Pending', grades: [{subject: 'Math', score: 50}, {subject: 'Science', score: 55}, {subject: 'English', score: 62}, {subject: 'Social Studies', score: 58}] },
 ];
 
 export const teachers = [
