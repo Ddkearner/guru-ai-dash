@@ -8,16 +8,14 @@ import {
   CardDescription,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { BrainCircuit, Loader2, ChevronDown, X } from 'lucide-react';
-import {
-  assessTeacherMorale,
-} from '@/ai/flows/assess-teacher-morale';
+import { BrainCircuit, Loader2, ChevronDown, X, Download } from 'lucide-react';
+import { assessTeacherMorale } from '@/ai/flows/assess-teacher-morale';
 import type { AssessTeacherMoraleOutput } from '@/ai/schemas/assess-teacher-morale-schema';
 import { useToast } from '@/hooks/use-toast';
 import { teachers } from '@/lib/school-data';
-import { cn } from '@/lib/utils';
+import { cn, downloadReport } from '@/lib/utils';
 
-type TeacherPulseState = AssessTeacherMoraleOutput & { 
+type TeacherPulseState = AssessTeacherMoraleOutput & {
   isLoading: boolean;
   isExpanded: boolean;
 };
@@ -47,7 +45,14 @@ export function TeacherPulse() {
 
     setPulseData((prev) => ({
       ...prev,
-      [teacherId]: { ...prev[teacherId], isLoading: true, detailedAnalysis: '', suggestedAction: '', moraleLevel: '', isExpanded: false },
+      [teacherId]: {
+        ...prev[teacherId],
+        isLoading: true,
+        detailedAnalysis: '',
+        suggestedAction: '',
+        moraleLevel: '',
+        isExpanded: false,
+      },
     }));
 
     try {
@@ -75,15 +80,38 @@ export function TeacherPulse() {
   };
 
   const toggleExpand = (teacherId: string) => {
-    setPulseData(prev => ({
+    setPulseData((prev) => ({
       ...prev,
-      [teacherId]: { ...prev[teacherId], isExpanded: !prev[teacherId].isExpanded }
+      [teacherId]: {
+        ...prev[teacherId],
+        isExpanded: !prev[teacherId].isExpanded,
+      },
     }));
   };
 
   const closeAnalysis = (teacherId: string) => {
     const { [teacherId]: _, ...rest } = pulseData;
     setPulseData(rest);
+  };
+  
+  const handleDownload = (teacherId: string) => {
+    const teacher = teachers.find(t => t.id === teacherId);
+    const pulse = pulseData[teacherId];
+    if (!teacher || !pulse) return;
+
+    const reportContent = `
+Teacher Morale Assessment: ${teacher.name}
+=========================================
+
+Morale Level: ${pulse.moraleLevel}
+
+Detailed Analysis:
+${pulse.detailedAnalysis}
+
+Suggested Action:
+${pulse.suggestedAction}
+    `;
+    downloadReport(`teacher-pulse-${teacher.name.replace(' ', '-')}.txt`, reportContent);
   };
 
   return (
@@ -114,46 +142,72 @@ export function TeacherPulse() {
                   <span className="hidden ml-2 sm:inline">Assess</span>
                 </Button>
               </div>
-              {currentPulse && !currentPulse.isLoading && currentPulse.moraleLevel && (
-                <div className="p-3 mt-2 space-y-3 border rounded-md bg-background relative">
-                  <Button variant="ghost" size="icon" className="absolute top-1 right-1 h-6 w-6" onClick={() => closeAnalysis(teacher.id)}>
-                    <X className="h-4 w-4" />
-                  </Button>
-                  <div className="flex items-center gap-3">
+              {currentPulse &&
+                !currentPulse.isLoading &&
+                currentPulse.moraleLevel && (
+                  <div className="p-3 mt-2 space-y-3 border rounded-md bg-background relative">
+                    <div className="absolute top-1 right-1 flex items-center">
+                        <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => handleDownload(teacher.id)}>
+                            <Download className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => closeAnalysis(teacher.id)}>
+                            <X className="h-4 w-4" />
+                        </Button>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`w-3 h-3 rounded-full ${getPulseColorClass(
+                          currentPulse.moraleLevel
+                        )}`}
+                      ></div>
+                      <span className="text-sm font-semibold pr-6">
+                        {currentPulse.moraleLevel} Morale
+                      </span>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-semibold">
+                        Analysis Summary
+                      </h4>
+                      <p
+                        className={cn(
+                          'mt-1 text-sm text-muted-foreground',
+                          !currentPulse.isExpanded && 'line-clamp-2'
+                        )}
+                      >
+                        {currentPulse.detailedAnalysis}
+                      </p>
+                    </div>
                     <div
-                      className={`w-3 h-3 rounded-full ${getPulseColorClass(currentPulse.moraleLevel)}`}
-                    ></div>
-                    <span className="text-sm font-semibold pr-6">
-                      {currentPulse.moraleLevel} Morale
-                    </span>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-semibold">Analysis Summary</h4>
-                    <p className={cn("mt-1 text-sm text-muted-foreground", !currentPulse.isExpanded && "line-clamp-2")}>
-                      {currentPulse.detailedAnalysis}
-                    </p>
-                  </div>
-                  <div className={cn('transition-all duration-300', currentPulse.isExpanded ? 'max-h-96 opacity-100 mt-2' : 'max-h-0 opacity-0 overflow-hidden')}>
-                    <h4 className="text-sm font-semibold">Suggested Action</h4>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {currentPulse.suggestedAction}
-                    </p>
-                  </div>
-                   <Button
-                    variant="link"
-                    onClick={() => toggleExpand(teacher.id)}
-                    className="p-0 h-auto text-sm"
-                  >
-                    <ChevronDown
                       className={cn(
-                        'w-4 h-4 mr-1 transition-transform',
-                        currentPulse.isExpanded && 'rotate-180'
+                        'transition-all duration-300',
+                        currentPulse.isExpanded
+                          ? 'max-h-96 opacity-100 mt-2'
+                          : 'max-h-0 opacity-0 overflow-hidden'
                       )}
-                    />
-                    {currentPulse.isExpanded ? 'Show Less' : 'Show More'}
-                  </Button>
-                </div>
-              )}
+                    >
+                      <h4 className="text-sm font-semibold">
+                        Suggested Action
+                      </h4>
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        {currentPulse.suggestedAction}
+                      </p>
+                    </div>
+                    <Button
+                      variant="link"
+                      onClick={() => toggleExpand(teacher.id)}
+                      className="p-0 h-auto text-sm"
+                    >
+                      <ChevronDown
+                        className={cn(
+                          'w-4 h-4 mr-1 transition-transform',
+                          currentPulse.isExpanded && 'rotate-180'
+                        )}
+                      />
+                      {currentPulse.isExpanded ? 'Show Less' : 'Show More'}
+                    </Button>
+                  </div>
+                )}
             </div>
           );
         })}
@@ -161,5 +215,3 @@ export function TeacherPulse() {
     </Card>
   );
 }
-
-    

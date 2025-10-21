@@ -19,13 +19,15 @@ import {
   Eye,
   Award,
   ChevronDown,
-  X
+  X,
+  Download,
 } from 'lucide-react';
 import { admissionFunnelData } from '@/lib/school-data';
 import { useToast } from '@/hooks/use-toast';
 import { analyzeAdmissionFunnel } from '@/ai/flows/analyze-admission-funnel';
 import type { AnalyzeAdmissionFunelOutput } from '@/ai/schemas/analyze-admission-funnel-schema';
 import { cn } from '@/lib/utils';
+import { downloadReport } from '@/lib/utils';
 
 type FunnelStage = {
   stage: string;
@@ -124,6 +126,24 @@ export function AdmissionFunnel() {
     }
   };
 
+  const handleDownload = () => {
+    if (!analysis) return;
+    const reportContent = `
+Admission Funnel Analysis
+=========================
+
+KEY INSIGHTS:
+${analysis.summaryPoints.map(p => `- ${p}`).join('\n')}
+
+DETAILED ANALYSIS:
+${analysis.analysis}
+
+SUGGESTED STRATEGIES:
+${analysis.suggestions.map(s => `- ${s}`).join('\n')}
+    `;
+    downloadReport('admission-funnel-analysis.txt', reportContent);
+  };
+
   return (
     <Card className="relative overflow-hidden">
       <CardHeader>
@@ -158,9 +178,15 @@ export function AdmissionFunnel() {
 
           {analysis && !isLoading && (
             <div className="mt-4 p-4 border rounded-lg bg-secondary/30 relative">
-              <Button variant="ghost" size="icon" className="absolute top-2 right-2 h-6 w-6" onClick={() => setAnalysis(null)}>
-                <X className="h-4 w-4" />
-              </Button>
+              <div className="absolute top-2 right-2 flex items-center">
+                <Button variant="ghost" size="icon" className="h-6 w-6" onClick={handleDownload}>
+                    <Download className="h-4 w-4" />
+                </Button>
+                <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => setAnalysis(null)}>
+                    <X className="h-4 w-4" />
+                </Button>
+              </div>
+
               <div>
                 <h5 className="font-semibold pr-8">Key Insights</h5>
                  <ul className="mt-2 space-y-1 list-disc list-inside">
@@ -212,7 +238,7 @@ export function AdmissionFunnel() {
                     isAnalysisExpanded && 'rotate-180'
                   )}
                 />
-                {isAnalysisExpanded ? 'Show Detailed Analysis' : 'Show Detailed Analysis'}
+                {isAnalysisExpanded ? 'Show Less' : 'Show Detailed Analysis'}
               </Button>
             </div>
           )}

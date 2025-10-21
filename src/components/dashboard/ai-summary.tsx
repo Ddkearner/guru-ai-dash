@@ -8,9 +8,10 @@ import {
   CardDescription,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Sparkles, Loader2 } from 'lucide-react';
+import { Sparkles, Loader2, Download } from 'lucide-react';
 import { generateDailySchoolSummary } from '@/ai/flows/generate-daily-school-summary';
 import { useToast } from '@/hooks/use-toast';
+import { downloadReport } from '@/lib/utils';
 
 export function AiSummary() {
   const [summary, setSummary] = useState('');
@@ -45,29 +46,49 @@ export function AiSummary() {
     }
   };
 
+  const handleDownload = () => {
+    if (!summary) return;
+    const reportContent = `
+Today's Quick Summary
+=====================
+${summary}
+    `;
+    downloadReport('daily-school-summary.txt', reportContent);
+  };
+
   return (
     <Card>
       <CardHeader>
         <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <CardTitle className="font-headline">Today's Quick Summary</CardTitle>
+            <CardTitle className="font-headline">
+              Today's Quick Summary
+            </CardTitle>
             <CardDescription>
               An AI-powered look at today's school activity.
             </CardDescription>
           </div>
-          <Button
-            onClick={handleGenerateSummary}
-            disabled={isLoading}
-            size="sm"
-            className="w-full sm:w-auto bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 text-white hover:opacity-90 transition-opacity"
-          >
-            {isLoading ? (
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-            ) : (
-              <Sparkles className="w-4 h-4 mr-2" />
+          <div className="flex w-full sm:w-auto items-center gap-2">
+            <Button
+              onClick={handleGenerateSummary}
+              disabled={isLoading}
+              size="sm"
+              className="flex-1 sm:flex-initial bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 text-white hover:opacity-90 transition-opacity"
+            >
+              {isLoading ? (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <Sparkles className="w-4 h-4 mr-2" />
+              )}
+              Generate
+            </Button>
+            {summary && (
+              <Button onClick={handleDownload} size="sm" variant="outline">
+                <Download className="w-4 h-4" />
+                <span className="sr-only">Download Summary</span>
+              </Button>
             )}
-            Generate
-          </Button>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="flex items-center justify-center min-h-[148px]">

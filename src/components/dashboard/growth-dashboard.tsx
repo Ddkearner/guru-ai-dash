@@ -34,6 +34,7 @@ import {
   UserPlus,
   ChevronDown,
   X,
+  Download,
 } from 'lucide-react';
 import {
   Select,
@@ -46,7 +47,7 @@ import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { generateGrowthStrategies } from '@/ai/flows/generate-growth-strategies';
 import type { GenerateGrowthStrategiesOutput } from '@/ai/schemas/generate-growth-strategies-schema';
-import { cn } from '@/lib/utils';
+import { cn, downloadReport } from '@/lib/utils';
 
 type DataKey = 'strength' | 'fees' | 'enquiries' | 'admissions';
 
@@ -79,6 +80,25 @@ export function GrowthDashboard() {
       setIsLoading(false);
     }
   };
+  
+  const handleDownload = () => {
+    if (!analysis) return;
+    const reportContent = `
+Growth Strategy Report for ${focusedMetric}
+=======================================
+
+SUMMARY:
+${analysis.summaryPoints.map(p => `- ${p}`).join('\n')}
+
+DETAILED ANALYSIS:
+${analysis.analysis}
+
+SUGGESTED STRATEGIES:
+${analysis.suggestions.map(s => `- ${s}`).join('\n')}
+    `;
+    downloadReport(`growth-strategies-${focusedMetric}.txt`, reportContent);
+  };
+
 
   const chartConfig = {
     admissions: { label: 'Admissions', color: 'hsl(var(--chart-1))' },
@@ -202,64 +222,73 @@ export function GrowthDashboard() {
           </Button>
 
           {analysis && !isLoading && (
-             <div className="mt-4 p-4 border rounded-lg bg-secondary/30 relative">
-               <Button variant="ghost" size="icon" className="absolute top-2 right-2 h-6 w-6" onClick={() => setAnalysis(null)}>
-                 <X className="h-4 w-4" />
-               </Button>
-               <div>
-                 <h5 className="font-semibold pr-8">Quick Summary</h5>
-                  <ul className="mt-2 space-y-1 list-disc list-inside">
-                    {analysis.summaryPoints.map((point, index) => (
-                      <li key={index} className="text-sm text-muted-foreground">
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
-               </div>
-               <div
-                 className={cn(
-                   'space-y-4 transition-all duration-300',
-                   isAnalysisExpanded
-                     ? 'max-h-[1000px] opacity-100 mt-4'
-                     : 'max-h-0 opacity-0 overflow-hidden'
-                 )}
-               >
+            <div className="mt-4 p-4 border rounded-lg bg-secondary/30 relative">
+              <div className="absolute top-2 right-2 flex items-center">
+                 <Button variant="ghost" size="icon" className="h-6 w-6" onClick={handleDownload}>
+                    <Download className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-6 w-6"
+                  onClick={() => setAnalysis(null)}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+
+              <div>
+                <h5 className="font-semibold pr-8">Quick Summary</h5>
+                <ul className="mt-2 space-y-1 list-disc list-inside">
+                  {analysis.summaryPoints.map((point, index) => (
+                    <li key={index} className="text-sm text-muted-foreground">
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div
+                className={cn(
+                  'space-y-4 transition-all duration-300',
+                  isAnalysisExpanded
+                    ? 'max-h-[1000px] opacity-100 mt-4'
+                    : 'max-h-0 opacity-0 overflow-hidden'
+                )}
+              >
                 <div>
                   <h5 className="font-semibold">Detailed Analysis</h5>
-                  <p
-                    className='mt-1 text-sm text-muted-foreground'
-                  >
+                  <p className="mt-1 text-sm text-muted-foreground">
                     {analysis.analysis}
                   </p>
                 </div>
-                 <div>
-                   <h5 className="font-semibold">Suggested Strategies</h5>
-                   <ul className="mt-2 space-y-2">
-                     {analysis.suggestions.map((suggestion, index) => (
-                       <li key={index} className="flex items-start gap-2">
-                         <ListChecks className="w-4 h-4 mt-1 text-success shrink-0" />
-                         <span className="text-sm text-muted-foreground">
-                           {suggestion}
-                         </span>
-                       </li>
-                     ))}
-                   </ul>
-                 </div>
-               </div>
-               <Button
-                 variant="link"
-                 onClick={() => setIsAnalysisExpanded(!isAnalysisExpanded)}
-                 className="p-0 h-auto mt-2 text-sm"
-               >
-                 <ChevronDown
-                   className={cn(
-                     'w-4 h-4 mr-1 transition-transform',
-                     isAnalysisExpanded && 'rotate-180'
-                   )}
-                 />
-                 {isAnalysisExpanded ? 'Show Less' : 'Show Detailed Analysis'}
-               </Button>
-             </div>
+                <div>
+                  <h5 className="font-semibold">Suggested Strategies</h5>
+                  <ul className="mt-2 space-y-2">
+                    {analysis.suggestions.map((suggestion, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <ListChecks className="w-4 h-4 mt-1 text-success shrink-0" />
+                        <span className="text-sm text-muted-foreground">
+                          {suggestion}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <Button
+                variant="link"
+                onClick={() => setIsAnalysisExpanded(!isAnalysisExpanded)}
+                className="p-0 h-auto mt-2 text-sm"
+              >
+                <ChevronDown
+                  className={cn(
+                    'w-4 h-4 mr-1 transition-transform',
+                    isAnalysisExpanded && 'rotate-180'
+                  )}
+                />
+                {isAnalysisExpanded ? 'Show Less' : 'Show Detailed Analysis'}
+              </Button>
+            </div>
           )}
         </div>
       </CardContent>
