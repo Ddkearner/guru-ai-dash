@@ -57,7 +57,23 @@ export const MeeraAiChatInputSchema = z.object({
 
 export type MeeraAiChatInput = z.infer<typeof MeeraAiChatInputSchema>;
 
-export const MeeraAiChatOutputSchema = z.object({
-  response: z.string().describe('The AI assistant\'s response to the user\'s query.'),
+const TextResponseSchema = z.object({
+  component: z.literal('text'),
+  props: z.object({
+    text: z.string().describe('The text response to the user query.'),
+  }),
 });
+
+const TodoListResponseSchema = z.object({
+    component: z.literal('todo-list'),
+    props: z.object({
+        tasks: z.array(TaskSchema).describe('The list of to-do tasks.'),
+    }),
+});
+
+export const MeeraAiChatOutputSchema = z.union([
+    TextResponseSchema,
+    TodoListResponseSchema,
+]);
+
 export type MeeraAiChatOutput = z.infer<typeof MeeraAiChatOutputSchema>;

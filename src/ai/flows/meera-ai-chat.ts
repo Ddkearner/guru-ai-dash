@@ -37,7 +37,9 @@ const meeraAiChatPrompt = ai.definePrompt({
 
   User's query: "{{query}}"
 
-  Based on the user's query, provide a relevant and helpful response. If the query is a greeting, respond with a friendly greeting. If the query is a question, answer it using the provided data.
+  Based on the user's query, decide on the best way to respond.
+  - If the user is asking for their to-do list, or "what to do today", respond with the 'todo-list' component and include the list of tasks.
+  - For all other queries, respond with a 'text' component containing a helpful, conversational answer.
   `,
 });
 

@@ -8,17 +8,66 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet';
-import {
-  Sparkles,
-  Send,
-  Loader2,
-} from 'lucide-react';
+import { Sparkles, Send, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { meeraAiChat } from '@/ai/flows/meera-ai-chat';
+import type { MeeraAiChatOutput } from '@/ai/schemas/meera-ai-chat-schema';
+import { todoTasks as allTasks, type Task } from '@/lib/school-data';
+import Link from 'next/link';
+import { Checkbox } from '../ui/checkbox';
 
 type Message = {
-  text: string;
+  id: number;
   sender: 'user' | 'ai';
+  content: MeeraAiChatOutput | string;
+};
+
+function TodoListComponent({ tasks: initialTasks }: { tasks: Task[] }) {
+  const [tasks, setTasks] = useState(initialTasks);
+  
+  if (!tasks || tasks.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-4 text-center text-muted-foreground">
+        <span className="text-2xl">🎉</span>
+        <p className="mt-2 font-medium">All tasks completed!</p>
+        <p className="text-sm">Great job staying on top of things.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-2">
+      {tasks.map((task) => (
+        <div
+          key={task.id}
+          className="flex items-start gap-4 p-3 transition-all duration-300 ease-in-out rounded-lg"
+        >
+          <div className="flex items-center h-5 pt-1">
+            <Checkbox id={task.id} disabled aria-label={`Task checkbox`} />
+          </div>
+          <div className="grid flex-1 gap-0.5 leading-none">
+            <Link href={task.href} passHref>
+              <label
+                htmlFor={task.id}
+                className="font-medium cursor-pointer hover:underline"
+              >
+                {task.title}
+              </label>
+            </Link>
+            <Link href={task.href} passHref>
+              <p className="text-sm cursor-pointer text-muted-foreground">
+                {task.description}
+              </p>
+            </Link>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const componentMap = {
+  'todo-list': TodoListComponent,
 };
 
 export function MeeraAiPanel({
@@ -37,16 +86,19 @@ export function MeeraAiPanel({
     const text = messageText || input;
     if (!text.trim()) return;
 
-    const newMessages: Message[] = [...messages, { text, sender: 'user' }];
+    const newMessages: Message[] = [
+      ...messages,
+      { id: Date.now(), text, sender: 'user', content: text },
+    ];
     setMessages(newMessages);
-setInput('');
+    setInput('');
     setIsLoading(true);
 
     try {
       const result = await meeraAiChat({ query: text });
       setMessages([
         ...newMessages,
-        { text: result.response, sender: 'ai' },
+        { id: Date.now() + 1, sender: 'ai', content: result },
       ]);
     } catch (error) {
       console.error('Meera AI Error:', error);
@@ -55,7 +107,7 @@ setInput('');
         title: 'Error',
         description: 'Could not get response from Meera AI. Please try again.',
       });
-      setMessages(newMessages);
+      setMessages(newMessages); // Revert to previous state on error
     } finally {
       setIsLoading(false);
     }
@@ -76,21 +128,19 @@ setInput('');
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {messages.length === 0 ? (
             <div className="text-center flex flex-col items-center justify-center h-full">
-               <div className='w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4'>
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <Sparkles className="w-8 h-8 text-primary" />
-               </div>
-              <h2 className="text-xl font-semibold">
-                Hi there. I'm Meera.
-              </h2>
+              </div>
+              <h2 className="text-xl font-semibold">Hi there. I'm Meera.</h2>
               <p className="text-muted-foreground mt-1">
                 Your personal school operations assistant.
               </p>
             </div>
           ) : (
             <div className="space-y-4">
-              {messages.map((msg, index) => (
+              {messages.map((msg) => (
                 <div
-                  key={index}
+                  key={msg.id}
                   className={`flex gap-3 ${
                     msg.sender === 'user' ? 'justify-end' : 'justify-start'
                   }`}
@@ -102,13 +152,22 @@ setInput('');
                         : 'bg-secondary'
                     }`}
                   >
-                    <p className="text-sm whitespace-pre-wrap">{msg.text}</p>
+                    {typeof msg.content === 'string' ? (
+                       <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                    ) : msg.content.component === 'text' ? (
+                      <p className="text-sm whitespace-pre-wrap">{msg.content.props.text}</p>
+                    ) : (
+                      (() => {
+                        const Component = componentMap[msg.content.component as keyof typeof componentMap];
+                        return Component ? <Component {...(msg.content.props as any)} /> : null;
+                      })()
+                    )}
                   </div>
                 </div>
               ))}
             </div>
           )}
-           {isLoading && (
+          {isLoading && (
             <div className="flex justify-start">
               <div className="p-3 rounded-lg bg-secondary">
                 <Loader2 className="w-5 h-5 animate-spin" />
