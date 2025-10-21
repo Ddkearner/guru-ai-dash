@@ -93,7 +93,7 @@ export function GrowthDashboard() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
           <MetricCard
             title="Admissions"
             value={latestData.admissions}
@@ -127,7 +127,7 @@ export function GrowthDashboard() {
             setFocusedMetric={setFocusedMetric}
           />
         </div>
-        <div className="h-[300px] w-full">
+        <div className="h-[250px] sm:h-[300px] w-full">
           <ChartContainer config={chartConfig} className="h-full w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
@@ -140,8 +140,9 @@ export function GrowthDashboard() {
                   tickLine={false}
                   axisLine={false}
                   tickMargin={8}
+                  tick={{ fontSize: 12 }}
                 />
-                <YAxis />
+                <YAxis tick={{ fontSize: 12 }} />
                 <Tooltip
                   cursor={{ fill: 'hsl(var(--muted))' }}
                   content={<ChartTooltipContent />}
@@ -242,14 +243,14 @@ function MetricCard({
   return (
     <div
       onClick={() => setFocusedMetric(metric)}
-      className={`p-4 border-2 rounded-lg transition-all cursor-pointer ${
+      className={`p-3 sm:p-4 border-2 rounded-lg transition-all cursor-pointer ${
         focusedMetric === metric ? 'border-primary shadow-md' : 'border-border'
       }`}
     >
-      <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+      <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-muted-foreground">
         <Icon className="w-4 h-4" /> {title}
       </div>
-      <div className="mt-2 text-2xl font-bold">{value}</div>
+      <div className="mt-2 text-xl sm:text-2xl font-bold">{value}</div>
     </div>
   );
 }

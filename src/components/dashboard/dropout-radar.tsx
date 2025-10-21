@@ -48,8 +48,8 @@ export function DropoutRadar() {
                   </Avatar>
                   <div className="flex-1">
                     <p className="font-medium">{student.name}</p>
-                    <p className="text-sm text-muted-foreground">
-                      Class {student.class} | Roll No: {student.roll}
+                    <p className="text-xs sm:text-sm text-muted-foreground">
+                      Class {student.class} | Roll: {student.roll}
                     </p>
                   </div>
                   <div className="flex items-center text-sm text-destructive">
@@ -64,7 +64,7 @@ export function DropoutRadar() {
                 </DialogHeader>
                 <div className="py-4 space-y-6">
                   <div className="flex items-center gap-4">
-                    <Avatar className="w-20 h-20">
+                    <Avatar className="w-16 h-16 sm:w-20 sm:h-20">
                       {student.image && <AvatarImage src={student.image} alt={student.name} data-ai-hint="student portrait" />}
                       <AvatarFallback className="text-2xl">{student.name.charAt(0)}</AvatarFallback>
                     </Avatar>
@@ -91,7 +91,7 @@ export function DropoutRadar() {
 
                   <div>
                      <h4 className="mb-2 font-semibold">Subject-wise Grades</h4>
-                     <div className='grid grid-cols-2 gap-4'>
+                     <div className='grid grid-cols-2 gap-2 sm:gap-4'>
                        {student.grades.map(grade => (
                          <div key={grade.subject} className='p-3 rounded-md bg-secondary/50'>
                            <p className='text-sm font-medium'>{grade.subject}</p>

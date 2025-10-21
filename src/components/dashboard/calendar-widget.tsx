@@ -31,7 +31,7 @@ export function CalendarWidget() {
           Schedule and view your important events.
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col gap-6 md:flex-row">
+      <CardContent className="flex flex-col gap-6 lg:flex-row">
         <div className="flex justify-center">
             <Calendar
             mode="single"
@@ -46,7 +46,7 @@ export function CalendarWidget() {
           </h3>
           {appointments.map((apt) => (
             <div key={apt.title} className="flex items-center gap-4">
-              <Badge variant="secondary" className="font-mono text-primary">
+              <Badge variant="secondary" className="font-mono text-primary text-xs">
                 {apt.time}
               </Badge>
               <p className="text-sm">{apt.title}</p>

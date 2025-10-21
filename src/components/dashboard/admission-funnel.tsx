@@ -68,13 +68,13 @@ function FunnelChart({ data }: { data: FunnelStage[] }) {
               className={`${stageColors[index]} rounded-lg shadow-md h-16 flex items-center justify-between px-4 transition-all duration-300`}
               style={{ width: `${Math.max(widthPercentage, 20)}%` }}
             >
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 sm:gap-3">
                 <div className="p-2 bg-white/20 rounded-full">
-                  {React.cloneElement(stageIcons[item.stage as keyof typeof stageIcons], { className: 'w-5 h-5 text-white' })}
+                  {React.cloneElement(stageIcons[item.stage as keyof typeof stageIcons], { className: 'w-4 h-4 sm:w-5 sm:h-5 text-white' })}
                 </div>
-                <span className="font-semibold text-white">{item.stage}</span>
+                <span className="font-semibold text-white text-sm sm:text-base">{item.stage}</span>
               </div>
-              <span className="text-xl font-bold text-white">{item.value}</span>
+              <span className="text-lg sm:text-xl font-bold text-white">{item.value}</span>
             </div>
 
             {index < data.length - 1 && (

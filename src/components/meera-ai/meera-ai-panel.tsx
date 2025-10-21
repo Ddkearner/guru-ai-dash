@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -103,6 +103,13 @@ export function MeeraAiPanel({
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollAreaRef.current) {
+      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+    }
+  }, [messages, isLoading]);
 
   const handleSendMessage = async (messageText?: string) => {
     const text = messageText || input;
@@ -167,15 +174,15 @@ export function MeeraAiPanel({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        className="w-[440px] sm:w-[540px] bg-background text-foreground p-0 flex flex-col"
+        className="w-full sm:max-w-md bg-background text-foreground p-0 flex flex-col"
       >
-        <SheetHeader className="p-6 pb-4 border-b">
+        <SheetHeader className="p-4 pb-4 border-b">
           <SheetTitle className="flex items-center gap-2 text-lg">
             <Sparkles className="w-5 h-5 text-primary" />
             Guru AI
           </SheetTitle>
         </SheetHeader>
-        <div className="flex-1 p-6 space-y-6 overflow-y-auto">
+        <div ref={scrollAreaRef} className="flex-1 p-4 space-y-6 overflow-y-auto">
           {messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center">
               <div className="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-primary/10">
@@ -242,7 +249,7 @@ export function MeeraAiPanel({
         <div className="p-4 bg-background border-t">
           <div className="relative">
             <Input
-              placeholder="Ask me anything about your school..."
+              placeholder="Ask me anything..."
               className="pr-12 h-12"
               value={input}
               onChange={(e) => setInput(e.target.value)}

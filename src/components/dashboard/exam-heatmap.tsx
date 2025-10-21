@@ -26,13 +26,13 @@ export function ExamHeatmap() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Accordion type="single" collapsible className="w-full">
+        <Accordion type="single" collapsible className="w-full" defaultValue={examHeatmapData[0].class}>
           {examHeatmapData.map((item) => (
             <AccordionItem value={item.class} key={item.class}>
-              <AccordionTrigger className="text-lg font-medium hover:no-underline">
-                <div className="flex items-center justify-between w-full pr-4">
-                  <span>{item.class}</span>
-                  <div className="flex items-center gap-4 text-sm">
+              <AccordionTrigger className="text-lg font-medium hover:no-underline text-left">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full pr-4 gap-2 sm:gap-4">
+                  <span className='whitespace-nowrap'>{item.class}</span>
+                  <div className="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm">
                     <span className="text-success">{item.passed} Passed</span>
                     <span className="text-destructive">{item.failed} Failed</span>
                     <div
@@ -48,7 +48,7 @@ export function ExamHeatmap() {
                   </div>
                 </div>
               </AccordionTrigger>
-              <AccordionContent className="p-2 space-y-4 bg-secondary/50 rounded-md">
+              <AccordionContent className="p-2 sm:p-4 space-y-4 bg-secondary/50 rounded-md">
                 <div className="grid gap-6 md:grid-cols-2">
                     <div>
                         <h4 className="mb-2 font-semibold">Subject Performance</h4>
@@ -67,28 +67,28 @@ export function ExamHeatmap() {
                     <div>
                         <h4 className="mb-2 font-semibold">Student Lists</h4>
                         <div className='flex gap-2 items-start'>
-                           <User className='w-4 h-4 mt-1 text-muted-foreground' />
+                           <User className='w-4 h-4 mt-1 text-muted-foreground shrink-0' />
                            <div>
                              <p className='text-sm text-muted-foreground'>Toppers</p>
-                             <div className="flex flex-wrap gap-2 mt-1">
-                                {item.toppers.map(name => <Badge variant='outline' key={name}>{name}</Badge>)}
+                             <div className="flex flex-wrap gap-1 sm:gap-2 mt-1">
+                                {item.toppers.map(name => <Badge variant='outline' key={name} className='text-xs sm:text-sm'>{name}</Badge>)}
                              </div>
                            </div>
                         </div>
                          <div className='flex gap-2 items-start mt-3'>
-                           <User className='w-4 h-4 mt-1 text-muted-foreground' />
+                           <User className='w-4 h-4 mt-1 text-muted-foreground shrink-0' />
                            <div>
                              <p className='text-sm text-muted-foreground'>Weakest Students</p>
-                             <div className="flex flex-wrap gap-2 mt-1">
-                                {item.weakest.map(name => <Badge variant='destructive' key={name}>{name}</Badge>)}
+                             <div className="flex flex-wrap gap-1 sm:gap-2 mt-1">
+                                {item.weakest.map(name => <Badge variant='destructive' key={name} className='text-xs sm:text-sm'>{name}</Badge>)}
                              </div>
                            </div>
                         </div>
                          <div className='flex gap-2 items-start mt-3'>
-                           <Book className='w-4 h-4 mt-1 text-muted-foreground' />
+                           <Book className='w-4 h-4 mt-1 text-muted-foreground shrink-0' />
                            <div>
                              <p className='text-sm text-muted-foreground'>Most Failed Subject</p>
-                             <Badge variant='secondary' className='mt-1'>{item.mostFailedSubject}</Badge>
+                             <Badge variant='secondary' className='mt-1 text-xs sm:text-sm'>{item.mostFailedSubject}</Badge>
                            </div>
                         </div>
                     </div>
