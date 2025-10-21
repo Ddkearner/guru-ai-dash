@@ -39,7 +39,7 @@ export default function Home() {
       <Sidebar>
         {/* Sidebar content will go here */}
       </Sidebar>
-      <SidebarInset>
+      <SidebarInset className="w-full">
         <DashboardHeader openReportDialog={handleGenerateReport} />
         <main className="flex-1 p-4 md:p-6 lg:p-8">
           <WelcomeHeader 
