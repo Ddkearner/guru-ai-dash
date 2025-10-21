@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sparkles } from 'lucide-react';
 import { MeeraAiPanel } from './meera-ai-panel';
+import type { Task } from '@/lib/school-data';
 
-export function MeeraAi() {
+
+export function MeeraAi({ addTask }: { addTask: (task: Task) => void }) {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
   return (
@@ -18,7 +20,7 @@ export function MeeraAi() {
         <Sparkles className="w-7 h-7" />
         <span className="sr-only">Open Meera AI</span>
       </Button>
-      <MeeraAiPanel open={isPanelOpen} onOpenChange={setIsPanelOpen} />
+      <MeeraAiPanel open={isPanelOpen} onOpenChange={setIsPanelOpen} addTask={addTask} />
     </>
   );
 }

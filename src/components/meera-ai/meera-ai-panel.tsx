@@ -1,5 +1,5 @@
 'use client';
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -12,7 +12,7 @@ import { Sparkles, Send, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { meeraAiChat } from '@/ai/flows/meera-ai-chat';
 import type { MeeraAiChatOutput } from '@/ai/schemas/meera-ai-chat-schema';
-import { todoTasks as allTasks, type Task } from '@/lib/school-data';
+import type { Task } from '@/lib/school-data';
 import Link from 'next/link';
 import { Checkbox } from '../ui/checkbox';
 
@@ -22,9 +22,7 @@ type Message = {
   content: MeeraAiChatOutput | string;
 };
 
-function TodoListComponent({ tasks: initialTasks }: { tasks: Task[] }) {
-  const [tasks, setTasks] = useState(initialTasks);
-  
+function TodoListComponent({ tasks }: { tasks: Task[] }) {
   if (!tasks || tasks.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-4 text-center text-muted-foreground">
@@ -66,20 +64,26 @@ function TodoListComponent({ tasks: initialTasks }: { tasks: Task[] }) {
   );
 }
 
-const ConfirmAddTaskComponent = ({ task, onConfirm }: { task: Task; onConfirm: () => void }) => {
+const ConfirmAddTaskComponent = ({
+  task,
+  onConfirm,
+}: {
+  task: Task;
+  onConfirm: () => void;
+}) => {
   return (
-    <div className="p-3 rounded-lg border bg-background/50">
-        <p className="text-sm font-medium">Ready to add this task?</p>
-        <div className="my-2 p-2 border-l-2 border-primary">
-            <p className="font-semibold">{task.title}</p>
-            <p className="text-xs text-muted-foreground">{task.description}</p>
-        </div>
-        <Button onClick={onConfirm} size="sm" className="w-full">
-            Yes, add task
-        </Button>
+    <div className="p-3 border rounded-lg bg-background/50">
+      <p className="text-sm font-medium">Ready to add this task?</p>
+      <div className="my-2 p-2 border-l-2 border-primary">
+        <p className="font-semibold">{task.title}</p>
+        <p className="text-xs text-muted-foreground">{task.description}</p>
+      </div>
+      <Button onClick={onConfirm} size="sm" className="w-full">
+        Yes, add task
+      </Button>
     </div>
   );
-}
+};
 
 const componentMap = {
   'todo-list': TodoListComponent,
@@ -89,9 +93,11 @@ const componentMap = {
 export function MeeraAiPanel({
   open,
   onOpenChange,
+  addTask,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  addTask: (task: Task) => void;
 }) {
   const { toast } = useToast();
   const [messages, setMessages] = useState<Message[]>([]);
@@ -128,25 +134,34 @@ export function MeeraAiPanel({
       setIsLoading(false);
     }
   };
-  
+
   const handleConfirmAddTask = (task: Task) => {
-    // This is a placeholder. In a real app, you'd lift this state up.
-    console.log("Task confirmed:", task);
+    addTask(task);
     toast({
-        title: "Task Added!",
-        description: `"${task.title}" has been added to your to-do list.`,
+      title: 'Task Added!',
+      description: `"${task.title}" has been added to your to-do list.`,
     });
     // Remove the confirmation message and add a confirmation text
-    setMessages(prev => [
-        ...prev.filter(m => {
-            if (typeof m.content !== 'string' && m.content.component === 'confirm-add-task') {
-                return false;
-            }
-            return true;
-        }),
-        { id: Date.now(), sender: 'ai', content: { component: 'text', props: { text: `Great, I've added "${task.title}" to your to-do list.` } } }
+    setMessages((prev) => [
+      ...prev.filter((m) => {
+        if (
+          typeof m.content !== 'string' &&
+          m.content.component === 'confirm-add-task'
+        ) {
+          return false;
+        }
+        return true;
+      }),
+      {
+        id: Date.now(),
+        sender: 'ai',
+        content: {
+          component: 'text',
+          props: { text: `Great, I've added "${task.title}" to your to-do list.` },
+        },
+      },
     ]);
-  }
+  };
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -160,14 +175,14 @@ export function MeeraAiPanel({
             Meera AI
           </SheetTitle>
         </SheetHeader>
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <div className="flex-1 p-6 space-y-6 overflow-y-auto">
           {messages.length === 0 ? (
-            <div className="text-center flex flex-col items-center justify-center h-full">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+            <div className="flex flex-col items-center justify-center h-full text-center">
+              <div className="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-primary/10">
                 <Sparkles className="w-8 h-8 text-primary" />
               </div>
               <h2 className="text-xl font-semibold">Hi there. I'm Meera.</h2>
-              <p className="text-muted-foreground mt-1">
+              <p className="mt-1 text-muted-foreground">
                 Your personal school operations assistant.
               </p>
             </div>
@@ -188,16 +203,24 @@ export function MeeraAiPanel({
                     }`}
                   >
                     {typeof msg.content === 'string' ? (
-                       <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                      <p className="text-sm whitespace-pre-wrap">
+                        {msg.content}
+                      </p>
                     ) : msg.content.component === 'text' ? (
-                      <p className="text-sm whitespace-pre-wrap">{msg.content.props.text}</p>
+                      <p className="text-sm whitespace-pre-wrap">
+                        {msg.content.props.text}
+                      </p>
                     ) : (
                       (() => {
-                        const Component = componentMap[msg.content.component as keyof typeof componentMap];
+                        const Component =
+                          componentMap[
+                            msg.content.component as keyof typeof componentMap
+                          ];
                         const props: any = msg.content.props;
 
                         if (msg.content.component === 'confirm-add-task') {
-                            props.onConfirm = () => handleConfirmAddTask(props.task);
+                          props.onConfirm = () =>
+                            handleConfirmAddTask(props.task);
                         }
 
                         return Component ? <Component {...props} /> : null;

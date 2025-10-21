@@ -12,12 +12,15 @@ import { ExamHeatmap } from '@/components/dashboard/exam-heatmap';
 import { DropoutRadar } from '@/components/dashboard/dropout-radar';
 import { TeacherPulse } from '@/components/dashboard/teacher-pulse';
 import { todoTasks as initialTodoTasks, Task } from '@/lib/school-data';
+import { MeeraAi } from '@/components/meera-ai/meera-ai';
 
 export default function Home() {
   const [tasks, setTasks] = useState<Task[]>(initialTodoTasks);
+  
   const addTask = (newTask: Task) => {
     setTasks(prevTasks => [newTask, ...prevTasks]);
   };
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <DashboardHeader />
@@ -64,6 +67,7 @@ export default function Home() {
           </div>
         </div>
       </main>
+      <MeeraAi addTask={addTask} />
     </div>
   );
 }
