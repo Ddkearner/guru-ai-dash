@@ -15,6 +15,7 @@ import type { MeeraAiChatOutput } from '@/ai/schemas/meera-ai-chat-schema';
 import type { Task } from '@/lib/school-data';
 import Link from 'next/link';
 import { Checkbox } from '../ui/checkbox';
+import { ScrollArea } from '../ui/scroll-area';
 
 type Message = {
   id: number;
@@ -103,11 +104,13 @@ export function MeeraAiPanel({
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+    if (viewportRef.current) {
+        setTimeout(() => {
+            viewportRef.current!.scrollTop = viewportRef.current!.scrollHeight;
+        }, 100);
     }
   }, [messages, isLoading]);
 
@@ -182,70 +185,72 @@ export function MeeraAiPanel({
             Guru AI
           </SheetTitle>
         </SheetHeader>
-        <div ref={scrollAreaRef} className="flex-1 p-4 space-y-6 overflow-y-auto">
-          {messages.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-center">
-              <div className="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-primary/10">
-                <Sparkles className="w-8 h-8 text-primary" />
+        <ScrollArea className='flex-1' ref={viewportRef}>
+          <div className="p-4 space-y-6">
+            {messages.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-full text-center">
+                <div className="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-primary/10">
+                  <Sparkles className="w-8 h-8 text-primary" />
+                </div>
+                <h2 className="text-xl font-semibold">Hi there. I'm Guru.</h2>
+                <p className="mt-1 text-muted-foreground">
+                  Your personal school operations assistant.
+                </p>
               </div>
-              <h2 className="text-xl font-semibold">Hi there. I'm Guru.</h2>
-              <p className="mt-1 text-muted-foreground">
-                Your personal school operations assistant.
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`flex gap-3 ${
-                    msg.sender === 'user' ? 'justify-end' : 'justify-start'
-                  }`}
-                >
+            ) : (
+              <div className="space-y-4">
+                {messages.map((msg) => (
                   <div
-                    className={`max-w-sm p-3 rounded-lg ${
-                      msg.sender === 'user'
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-secondary'
+                    key={msg.id}
+                    className={`flex gap-3 ${
+                      msg.sender === 'user' ? 'justify-end' : 'justify-start'
                     }`}
                   >
-                    {typeof msg.content === 'string' ? (
-                      <p className="text-sm whitespace-pre-wrap">
-                        {msg.content}
-                      </p>
-                    ) : msg.content.component === 'text' ? (
-                      <p className="text-sm whitespace-pre-wrap">
-                        {msg.content.props.text}
-                      </p>
-                    ) : (
-                      (() => {
-                        const Component =
-                          componentMap[
-                            msg.content.component as keyof typeof componentMap
-                          ];
-                        const props: any = msg.content.props;
+                    <div
+                      className={`max-w-sm p-3 rounded-lg ${
+                        msg.sender === 'user'
+                          ? 'bg-primary text-primary-foreground'
+                          : 'bg-secondary'
+                      }`}
+                    >
+                      {typeof msg.content === 'string' ? (
+                        <p className="text-sm whitespace-pre-wrap">
+                          {msg.content}
+                        </p>
+                      ) : msg.content.component === 'text' ? (
+                        <p className="text-sm whitespace-pre-wrap">
+                          {msg.content.props.text}
+                        </p>
+                      ) : (
+                        (() => {
+                          const Component =
+                            componentMap[
+                              msg.content.component as keyof typeof componentMap
+                            ];
+                          const props: any = msg.content.props;
 
-                        if (msg.content.component === 'confirm-add-task') {
-                          props.onConfirm = () =>
-                            handleConfirmAddTask(props.task);
-                        }
+                          if (msg.content.component === 'confirm-add-task') {
+                            props.onConfirm = () =>
+                              handleConfirmAddTask(props.task);
+                          }
 
-                        return Component ? <Component {...props} /> : null;
-                      })()
-                    )}
+                          return Component ? <Component {...props} /> : null;
+                        })()
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
-          {isLoading && (
-            <div className="flex justify-start">
-              <div className="p-3 rounded-lg bg-secondary">
-                <Loader2 className="w-5 h-5 animate-spin" />
+                ))}
               </div>
-            </div>
-          )}
-        </div>
+            )}
+            {isLoading && (
+              <div className="flex justify-start">
+                <div className="p-3 rounded-lg bg-secondary">
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                </div>
+              </div>
+            )}
+          </div>
+        </ScrollArea>
         <div className="p-4 bg-background border-t">
           <div className="relative">
             <Input

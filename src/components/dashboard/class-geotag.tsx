@@ -39,6 +39,7 @@ import { useToast } from '@/hooks/use-toast';
 import { analyzeGeotagForMarketing } from '@/ai/flows/analyze-geotag-for-marketing';
 import type { AnalyzeGeotagForMarketingOutput } from '@/ai/schemas/analyze-geotag-for-marketing-schema';
 import { downloadReport } from '@/lib/utils';
+import { ScrollArea } from '../ui/scroll-area';
 
 type GeotagKey = keyof typeof geotagData;
 
@@ -88,80 +89,81 @@ ${analysis.marketingSuggestions.map(s => `- ${s}`).join('\n')}
   };
 
   return (
-    <div>
-      <div className="pt-4 space-y-4">
-        <Button
-          onClick={handleGenerateAnalysis}
-          disabled={isLoading}
-          className="w-full bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 text-white hover:opacity-90 transition-opacity"
-        >
-          {isLoading ? (
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-          ) : (
-            <Lightbulb className="w-4 h-4 mr-2" />
-          )}
-          Generate Marketing Insights
-        </Button>
+    <div className='flex flex-col h-full'>
+       <ScrollArea className='flex-1 pr-6 -mr-6'>
+          <div className="space-y-4">
+            <Button
+              onClick={handleGenerateAnalysis}
+              disabled={isLoading}
+              className="w-full bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 text-white hover:opacity-90 transition-opacity"
+            >
+              {isLoading ? (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <Lightbulb className="w-4 h-4 mr-2" />
+              )}
+              Generate Marketing Insights
+            </Button>
 
-        {analysis && !isLoading && (
-          <div className="space-y-6">
-            <div>
-              <h4 className="flex items-center gap-2 font-semibold">
-                <Users className="w-4 h-4 text-primary" />
-                Quick Summary
-              </h4>
-              <ul className="mt-2 space-y-1 list-disc list-inside">
-                {analysis.summaryPoints.map((point, index) => (
-                  <li key={index} className="text-sm text-muted-foreground">
-                    {point}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="flex items-center gap-2 font-semibold">
-                <Users className="w-4 h-4 text-primary" />
-                Detailed Analysis
-              </h4>
-              <p className="mt-1 text-sm text-muted-foreground">
-                {analysis.analysis}
-              </p>
-            </div>
-            <div>
-              <h4 className="flex items-center gap-2 font-semibold">
-                <Briefcase className="w-4 h-4 text-primary" />
-                Partnership Opportunities
-              </h4>
-              <ul className="mt-2 space-y-2 list-disc list-inside">
-                {analysis.partnershipOpportunities.map((suggestion, index) => (
-                  <li key={index} className="text-sm text-muted-foreground">
-                    {suggestion}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="flex items-center gap-2 font-semibold">
-                <Megaphone className="w-4 h-4 text-primary" />
-                Campaign Suggestions
-              </h4>
-              <ul className="mt-2 space-y-2 list-disc list-inside">
-                {analysis.marketingSuggestions.map((suggestion, index) => (
-                  <li key={index} className="text-sm text-muted-foreground">
-                    {suggestion}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {analysis && !isLoading && (
+              <div className="space-y-6">
+                <div>
+                  <h4 className="flex items-center gap-2 font-semibold">
+                    <Users className="w-4 h-4 text-primary" />
+                    Quick Summary
+                  </h4>
+                  <ul className="mt-2 space-y-1 list-disc list-inside">
+                    {analysis.summaryPoints.map((point, index) => (
+                      <li key={index} className="text-sm text-muted-foreground">
+                        {point}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="flex items-center gap-2 font-semibold">
+                    <Users className="w-4 h-4 text-primary" />
+                    Detailed Analysis
+                  </h4>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {analysis.analysis}
+                  </p>
+                </div>
+                <div>
+                  <h4 className="flex items-center gap-2 font-semibold">
+                    <Briefcase className="w-4 h-4 text-primary" />
+                    Partnership Opportunities
+                  </h4>
+                  <ul className="mt-2 space-y-2 list-disc list-inside">
+                    {analysis.partnershipOpportunities.map((suggestion, index) => (
+                      <li key={index} className="text-sm text-muted-foreground">
+                        {suggestion}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="flex items-center gap-2 font-semibold">
+                    <Megaphone className="w-4 h-4 text-primary" />
+                    Campaign Suggestions
+                  </h4>
+                  <ul className="mt-2 space-y-2 list-disc list-inside">
+                    {analysis.marketingSuggestions.map((suggestion, index) => (
+                      <li key={index} className="text-sm text-muted-foreground">
+                        {suggestion}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
+            {isLoading && (
+              <div className="flex items-center justify-center min-h-[200px]">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+              </div>
+            )}
           </div>
-        )}
-        {isLoading && (
-          <div className="flex items-center justify-center min-h-[200px]">
-            <Loader2 className="w-8 h-8 animate-spin text-primary" />
-          </div>
-        )}
-      </div>
-
+       </ScrollArea>
       {analysis && !isLoading && (
         <DialogFooter className="pt-4 mt-4 border-t">
           <Button onClick={handleDownload} variant="outline">
@@ -218,7 +220,7 @@ export function ClassGeotag() {
                   </div>
                 </div>
               </DialogTrigger>
-              <DialogContent className="max-w-lg">
+              <DialogContent className="max-w-lg h-[70vh] flex flex-col">
                 <DialogHeader>
                   <DialogTitle>Marketing Analysis: {item.location}</DialogTitle>
                   <DialogDescription>
