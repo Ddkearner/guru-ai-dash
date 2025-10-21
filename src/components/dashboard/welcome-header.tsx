@@ -11,11 +11,11 @@ export function WelcomeHeader() {
   }, []);
 
   return (
-    <div className="p-6 rounded-lg bg-card border shadow-sm">
-      <h2 className="text-2xl font-bold text-card-foreground font-headline">
+    <div className="p-6 rounded-lg border shadow-sm bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900">
+      <h2 className="text-2xl font-bold text-white font-headline">
         Welcome back, Principal!
       </h2>
-      <p className="mt-1 text-muted-foreground">
+      <p className="mt-1 text-blue-200">
         Here's your overview for {currentDate}. Let's make it a great day.
       </p>
     </div>
