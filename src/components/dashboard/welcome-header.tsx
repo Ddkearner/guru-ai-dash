@@ -15,9 +15,10 @@ import {
 type WelcomeHeaderProps = {
   onNewTask: () => void;
   onQuickReport: () => void;
+  onNewEvent: () => void;
 };
 
-export function WelcomeHeader({ onNewTask, onQuickReport }: WelcomeHeaderProps) {
+export function WelcomeHeader({ onNewTask, onQuickReport, onNewEvent }: WelcomeHeaderProps) {
   const [currentDate, setCurrentDate] = useState('');
 
   useEffect(() => {
@@ -25,9 +26,7 @@ export function WelcomeHeader({ onNewTask, onQuickReport }: WelcomeHeaderProps) 
   }, []);
 
   const handleActionClick = (action: string) => {
-    // TODO: This is a placeholder. In a real app, you'd trigger
-    // the corresponding functionality, e.g., by calling a function
-    // passed down via props or using a global state manager.
+    // This is a placeholder for actions that are not yet implemented.
     alert(`Action clicked: ${action}`);
   };
 
@@ -41,7 +40,7 @@ export function WelcomeHeader({ onNewTask, onQuickReport }: WelcomeHeaderProps) 
       </p>
       <div className="mt-6 flex flex-wrap gap-2">
         <ActionButton icon={PlusCircle} label="New Task" onClick={onNewTask} />
-        <ActionButton icon={CalendarPlus} label="New Event" onClick={() => handleActionClick("New Event")} />
+        <ActionButton icon={CalendarPlus} label="New Event" onClick={onNewEvent} />
         <ActionButton icon={UserPlus} label="Add Student" onClick={() => handleActionClick("Add Student")} />
         <ActionButton icon={FileText} label="Quick Report" onClick={onQuickReport} />
         <ActionButton icon={CheckSquare} label="Attendance" onClick={() => handleActionClick("Attendance")} />

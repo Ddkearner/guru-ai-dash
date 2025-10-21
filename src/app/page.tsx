@@ -20,18 +20,26 @@ export default function Home() {
   const [tasks, setTasks] = useState<Task[]>(initialTodoTasks);
   const [isNewTaskDialogOpen, setIsNewTaskDialogOpen] = useState(false);
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
-  
+  const [reportScope, setReportScope] = useState('School');
+  const [isNewAppointmentDialogOpen, setIsNewAppointmentDialogOpen] = useState(false);
+
   const addTask = (newTask: Task) => {
     setTasks(prevTasks => [newTask, ...prevTasks]);
+  };
+  
+  const handleGenerateReport = (scope: string) => {
+    setReportScope(scope);
+    setIsReportDialogOpen(true);
   };
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      <DashboardHeader openReportDialog={() => setIsReportDialogOpen(true)} />
+      <DashboardHeader openReportDialog={handleGenerateReport} />
       <main className="flex-1 p-4 md:p-6 lg:p-8">
         <WelcomeHeader 
           onNewTask={() => setIsNewTaskDialogOpen(true)}
-          onQuickReport={() => setIsReportDialogOpen(true)}
+          onQuickReport={() => handleGenerateReport('School')}
+          onNewEvent={() => setIsNewAppointmentDialogOpen(true)}
         />
         <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-4">
           <div className="lg:col-span-4">
@@ -60,7 +68,10 @@ export default function Home() {
           </div>
 
           <div className="lg:col-span-2">
-            <CalendarWidget />
+            <CalendarWidget 
+              isNewAppointmentDialogOpen={isNewAppointmentDialogOpen}
+              setIsNewAppointmentDialogOpen={setIsNewAppointmentDialogOpen}
+            />
           </div>
 
           <div className="lg:col-span-2">
@@ -81,7 +92,7 @@ export default function Home() {
         </div>
       </main>
       <MeeraAi addTask={addTask} />
-      <AiReportGenerator open={isReportDialogOpen} onOpenChange={setIsReportDialogOpen} />
+      <AiReportGenerator open={isReportDialogOpen} onOpenChange={setIsReportDialogOpen} scope={reportScope} />
     </div>
   );
 }
