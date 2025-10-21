@@ -1,6 +1,6 @@
 import { z } from 'genkit';
 
-const FunnelStageSchema = z.object({
+export const FunnelStageSchema = z.object({
   stage: z.string().describe('The name of the funnel stage (e.g., "Enquiries", "Campus Visits", "Forms Filled", "Offers Extended", "Enrolled").'),
   value: z.number().describe('The number of students in this stage.'),
 });

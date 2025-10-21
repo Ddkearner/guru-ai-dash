@@ -1,6 +1,6 @@
 import { z } from 'genkit';
 
-const GrowthMetricSchema = z.object({
+export const GrowthMetricSchema = z.object({
   month: z.string(),
   admissions: z.number(),
   fees: z.number(),

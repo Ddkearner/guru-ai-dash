@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { BookOpenCheck } from 'lucide-react';
+import { AiReportGenerator } from './ai-report-generator';
 
 export function DashboardHeader() {
   return (
@@ -12,14 +13,17 @@ export function DashboardHeader() {
           Veritas AI
         </h1>
       </div>
-      <Avatar>
-        <AvatarImage
-          src="https://picsum.photos/seed/principal/100/100"
-          alt="Principal"
-          data-ai-hint="person"
-        />
-        <AvatarFallback>PA</AvatarFallback>
-      </Avatar>
+      <div className="flex items-center gap-4">
+        <AiReportGenerator />
+        <Avatar>
+          <AvatarImage
+            src="https://picsum.photos/seed/principal/100/100"
+            alt="Principal"
+            data-ai-hint="person"
+          />
+          <AvatarFallback>PA</AvatarFallback>
+        </Avatar>
+      </div>
     </header>
   );
 }
