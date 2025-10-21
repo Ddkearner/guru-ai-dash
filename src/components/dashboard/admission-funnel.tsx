@@ -16,7 +16,6 @@ import {
   Lightbulb,
   Loader2,
   ListChecks,
-  TrendingDown,
   Eye,
   Award,
 } from 'lucide-react';
@@ -32,69 +31,93 @@ type FunnelStage = {
 
 function FunnelChart({ data }: { data: FunnelStage[] }) {
   const getConversionRate = (from: number, to: number) => {
-    if (from === 0) return '0';
-    return ((to / from) * 100).toFixed(1);
+    if (from === 0) return 0;
+    return (to / from) * 100;
   };
 
-  const totalConversion =
-    data.length > 0
-      ? getConversionRate(data[0].value, data[data.length - 1].value)
-      : '0';
+  const maxVal = Math.max(...data.map((d) => d.value), 0);
 
   const stageIcons = {
-    Enquiries: <Users className="w-5 h-5 text-blue-500" />,
-    'Campus Visits': <Eye className="w-5 h-5 text-purple-500" />,
-    'Forms Filled': <FileText className="w-5 h-5 text-orange-500" />,
-    'Offers Extended': <Award className="w-5 h-5 text-yellow-500" />,
-    Enrolled: <CheckCircle className="w-5 h-5 text-green-500" />,
+    Enquiries: <Users className="w-5 h-5" />,
+    'Campus Visits': <Eye className="w-5 h-5" />,
+    'Forms Filled': <FileText className="w-5 h-5" />,
+    'Offers Extended': <Award className="w-5 h-5" />,
+    Enrolled: <CheckCircle className="w-5 h-5" />,
   };
 
-  return (
-    <div className="w-full">
-      <div className="relative p-4 space-y-2">
-        {data.map((item, index) => {
-          const nextValue = data[index + 1]?.value ?? 0;
-          const conversion = getConversionRate(item.value, nextValue);
-          const isLastStage = index === data.length - 1;
+  const stageColors = [
+    'text-blue-500',
+    'text-purple-500',
+    'text-orange-500',
+    'text-yellow-600',
+    'text-green-500',
+  ];
 
-          return (
-            <div key={item.stage} className="relative">
-              <div className="flex items-center gap-4 p-4 rounded-lg bg-secondary/50">
-                <div className="p-3 rounded-full bg-background">
+  return (
+    <div className="w-full flex flex-col items-center">
+      {data.map((item, index) => {
+        const widthPercentage = maxVal > 0 ? (item.value / maxVal) * 100 : 0;
+        const nextWidthPercentage =
+          index < data.length - 1
+            ? maxVal > 0
+              ? (data[index + 1].value / maxVal) * 100
+              : 0
+            : 0;
+
+        const conversion =
+          index < data.length - 1
+            ? getConversionRate(item.value, data[index + 1].value)
+            : 0;
+
+        return (
+          <div
+            key={item.stage}
+            className="relative flex flex-col items-center"
+            style={{ width: `${widthPercentage}%`, minWidth: '120px' }}
+          >
+            {/* Funnel Segment */}
+            <div
+              className="w-full h-16 bg-secondary/70 flex items-center justify-center px-4"
+              style={{
+                clipPath:
+                  'polygon(0 0, 100% 0, 90% 100%, 10% 100%)',
+              }}
+            >
+              <div className="flex items-center gap-4 text-foreground w-full">
+                <div
+                  className={`p-2 rounded-full bg-background/70 ${stageColors[index]}`}
+                >
                   {stageIcons[item.stage as keyof typeof stageIcons] || (
                     <Users className="w-5 h-5 text-gray-500" />
                   )}
                 </div>
-                <div className="flex-1">
-                  <p className="text-sm text-muted-foreground">{item.stage}</p>
-                  <p className="text-2xl font-bold">{item.value}</p>
+                <div className="flex-1 text-left">
+                  <p className="text-sm font-medium">{item.stage}</p>
+                  <p className="text-xl font-bold">{item.value}</p>
                 </div>
-                {!isLastStage && (
-                  <div className="absolute top-1/2 right-4 transform -translate-y-1/2 translate-x-full flex items-center gap-2 p-2 rounded-full bg-background border shadow-sm">
-                    <TrendingDown className="w-4 h-4 text-destructive" />
-                    <span className="text-xs font-semibold text-destructive">
-                      {100 - parseFloat(conversion)}%
-                    </span>
-                  </div>
-                )}
               </div>
-              {!isLastStage && (
-                <div className="pl-8 mt-2">
-                  <p className="text-sm font-medium text-success">
-                    {conversion}% conversion to next stage
-                  </p>
-                </div>
-              )}
             </div>
-          );
-        })}
-      </div>
-      <div className="p-4 mt-4 text-center border-t">
-        <p className="text-sm font-medium text-muted-foreground">
-          Overall Conversion Rate (Enquiries to Enrolled)
-        </p>
-        <p className="text-3xl font-bold text-success">{totalConversion}%</p>
-      </div>
+
+            {/* Connector / Conversion Rate */}
+            {index < data.length - 1 && (
+              <>
+                <div className="h-12 w-px bg-border -my-1" />
+                <div
+                  className="w-full h-10 flex items-center justify-center -my-3"
+                  style={{
+                    width: `${nextWidthPercentage}%`,
+                    minWidth: '110px',
+                  }}
+                >
+                  <div className="text-xs font-semibold text-success bg-background px-2 py-1 rounded-full border shadow-sm">
+                    {conversion.toFixed(1)}% Conv.
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -125,7 +148,7 @@ export function AdmissionFunnel() {
   };
 
   return (
-    <Card className="relative">
+    <Card className="relative overflow-hidden">
       <CardHeader>
         <CardTitle className="font-headline">Admission Funnel</CardTitle>
         <CardDescription>
@@ -133,7 +156,9 @@ export function AdmissionFunnel() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <FunnelChart data={admissionFunnelData.thisMonth} />
+        <div className="py-6">
+          <FunnelChart data={admissionFunnelData.thisMonth} />
+        </div>
 
         <div className="p-4 mt-4 border-t">
           <h4 className="mb-3 text-lg font-semibold font-headline">
