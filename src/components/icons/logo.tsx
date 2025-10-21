@@ -5,38 +5,25 @@ export function Logo({ className }: { className?: string }) {
     <svg
       width="24"
       height="24"
-      viewBox="0 0 24 24"
+      viewBox="0 0 110 90"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-primary", className)}
+      className={cn(className)}
     >
       <path
-        d="M12 2L2 7V17L12 22L22 17V7L12 2Z"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        opacity="0.8"
+        d="M54.0227 0.966797C48.0227 12.1668 32.6227 30.5668 23.6227 40.7668C32.0227 44.9668 47.0227 54.3668 54.0227 61.9668C61.0227 54.3668 76.0227 44.9668 84.4227 40.7668C75.4227 30.5668 60.0227 12.1668 54.0227 0.966797Z"
+        fill="#009688"
       />
       <path
-        d="M2 7L12 12L22 7"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        opacity="0.8"
+        d="M45.642 34.5771C34.042 41.3771 13.642 58.1771 0.841974 81.3771C17.242 84.5771 42.442 89.9771 54.042 66.9771C50.042 56.1771 49.042 46.1771 45.642 34.5771Z"
+        fill="#F44336"
       />
       <path
-        d="M12 12V22"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M17 4.5L7 9.5"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        opacity="0.8"
+        d="M62.4 34.5771C74 41.3771 94.4 58.1771 107.2 81.3771C90.8 84.5771 65.6 89.9771 54 66.9771C58 56.1771 59 46.1771 62.4 34.5771Z"
+        fill="#BCA136"
       />
     </svg>
   );
