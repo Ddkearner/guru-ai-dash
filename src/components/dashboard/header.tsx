@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { examHeatmapData } from '@/lib/school-data';
-import { SidebarTrigger } from '../ui/sidebar';
+import { Logo } from '../icons/logo';
 
 export function DashboardHeader({ openReportDialog }: { openReportDialog: (scope: string) => void }) {
   const classes = examHeatmapData.map(c => c.class);
@@ -16,7 +16,7 @@ export function DashboardHeader({ openReportDialog }: { openReportDialog: (scope
   return (
     <header className="flex items-center justify-between p-4 border-b sticky top-0 bg-background/80 backdrop-blur-sm z-10">
       <div className="flex items-center gap-3">
-        <SidebarTrigger />
+        <Logo />
         <h1 className="text-xl font-bold md:text-2xl font-headline text-foreground">
           Gurukul AI
         </h1>
