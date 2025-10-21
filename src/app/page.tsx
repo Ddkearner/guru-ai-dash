@@ -3,7 +3,7 @@ import { SummaryCards } from '@/components/dashboard/summary-cards';
 import { TodoList } from '@/components/dashboard/todo-list';
 import { AiSummary } from '@/components/dashboard/ai-summary';
 import { CalendarWidget } from '@/components/dashboard/calendar-widget';
-import { GrowthRadar } from '@/components/dashboard/growth-radar';
+import { GrowthDashboard } from '@/components/dashboard/growth-dashboard';
 import { AdmissionFunnel } from '@/components/dashboard/admission-funnel';
 import { ClassGeotag } from '@/components/dashboard/class-geotag';
 import { ExamHeatmap } from '@/components/dashboard/exam-heatmap';
@@ -29,7 +29,7 @@ export default function Home() {
           </div>
 
           <div className="lg:col-span-2">
-            <GrowthRadar />
+            <GrowthDashboard />
           </div>
 
           <div className="lg:col-span-2">

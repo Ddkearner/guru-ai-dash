@@ -8,22 +8,21 @@ import {
   CardTitle,
   CardDescription,
 } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import {
-  TrendingDown,
   Users,
   FileText,
   CheckCircle,
   Lightbulb,
   Loader2,
   ListChecks,
+  TrendingDown,
+  Eye,
+  Award,
 } from 'lucide-react';
 import { admissionFunnelData } from '@/lib/school-data';
 import { useToast } from '@/hooks/use-toast';
-import {
-  analyzeAdmissionFunnel,
-} from '@/ai/flows/analyze-admission-funnel';
+import { analyzeAdmissionFunnel } from '@/ai/flows/analyze-admission-funnel';
 import type { AnalyzeAdmissionFunelOutput } from '@/ai/schemas/analyze-admission-funnel-schema';
 
 type FunnelStage = {
@@ -44,8 +43,10 @@ function FunnelChart({ data }: { data: FunnelStage[] }) {
 
   const stageIcons = {
     Enquiries: <Users className="w-5 h-5 text-blue-500" />,
+    'Campus Visits': <Eye className="w-5 h-5 text-purple-500" />,
     'Forms Filled': <FileText className="w-5 h-5 text-orange-500" />,
-    Joined: <CheckCircle className="w-5 h-5 text-green-500" />,
+    'Offers Extended': <Award className="w-5 h-5 text-yellow-500" />,
+    Enrolled: <CheckCircle className="w-5 h-5 text-green-500" />,
   };
 
   return (
@@ -90,7 +91,7 @@ function FunnelChart({ data }: { data: FunnelStage[] }) {
       </div>
       <div className="p-4 mt-4 text-center border-t">
         <p className="text-sm font-medium text-muted-foreground">
-          Overall Conversion Rate
+          Overall Conversion Rate (Enquiries to Enrolled)
         </p>
         <p className="text-3xl font-bold text-success">{totalConversion}%</p>
       </div>
@@ -128,22 +129,11 @@ export function AdmissionFunnel() {
       <CardHeader>
         <CardTitle className="font-headline">Admission Funnel</CardTitle>
         <CardDescription>
-          Identifying bottlenecks in the admission pipeline.
+          From enquiry to enrollment: tracking conversion at each step.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue="thisMonth">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="thisMonth">This Month</TabsTrigger>
-            <TabsTrigger value="lastMonth">Last Month</TabsTrigger>
-          </TabsList>
-          <TabsContent value="thisMonth" className="pt-4">
-            <FunnelChart data={admissionFunnelData.thisMonth} />
-          </TabsContent>
-          <TabsContent value="lastMonth" className="pt-4">
-            <FunnelChart data={admissionFunnelData.lastMonth} />
-          </TabsContent>
-        </Tabs>
+        <FunnelChart data={admissionFunnelData.thisMonth} />
 
         <div className="p-4 mt-4 border-t">
           <h4 className="mb-3 text-lg font-semibold font-headline">

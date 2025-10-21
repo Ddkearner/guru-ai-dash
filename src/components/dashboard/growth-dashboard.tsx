@@ -253,5 +253,3 @@ function MetricCard({
     </div>
   );
 }
-
-// Remove the old GrowthRadar component

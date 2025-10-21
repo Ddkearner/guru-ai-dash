@@ -10,7 +10,7 @@ const GrowthMetricSchema = z.object({
 
 export const GenerateGrowthStrategiesInputSchema = z.object({
   growthData: z.array(GrowthMetricSchema).describe('Historical data of school growth metrics over several months.'),
-  activeMetric: z.enum(['strength', 'fees', 'enquiries']).describe('The primary metric the user is currently focused on.'),
+  activeMetric: z.enum(['strength', 'fees', 'enquiries', 'admissions']).describe('The primary metric the user is currently focused on.'),
 });
 export type GenerateGrowthStrategiesInput = z.infer<typeof GenerateGrowthStrategiesInputSchema>;
 

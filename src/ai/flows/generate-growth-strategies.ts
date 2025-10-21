@@ -52,7 +52,7 @@ const generateGrowthStrategiesPrompt = ai.definePrompt({
       -   "Introduce a 5% 'Early Bird' discount for parents who pay the entire year's fees upfront before the session begins."
       -   "Implement a digital payment gateway with automated SMS reminders for fee deadlines to reduce manual follow-ups."
 
-  -   **If 'enquiries' is the focus and is low:**
+  -   **If 'enquiries' or 'admissions' are the focus and are low:**
       -   "Run targeted Facebook/Instagram ad campaigns in a 10km radius of the school, highlighting recent student achievements or new facilities."
       -   "Partner with local pre-schools and activity centers for a 'Next Step' seminar, positioning your school as the ideal choice for primary education."
 

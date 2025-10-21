@@ -65,14 +65,18 @@ export const growthData = [
 
 export const admissionFunnelData = {
   thisMonth: [
-    { stage: 'Enquiries', value: 100 },
-    { stage: 'Forms Filled', value: 50 },
-    { stage: 'Joined', value: 25 },
+    { stage: 'Enquiries', value: 120 },
+    { stage: 'Campus Visits', value: 90 },
+    { stage: 'Forms Filled', value: 75 },
+    { stage: 'Offers Extended', value: 60 },
+    { stage: 'Enrolled', value: 55 },
   ],
   lastMonth: [
-    { stage: 'Enquiries', value: 85 },
-    { stage: 'Forms Filled', value: 40 },
-    { stage: 'Joined', value: 18 },
+    { stage: 'Enquiries', value: 100 },
+    { stage: 'Campus Visits', value: 70 },
+    { stage: 'Forms Filled', value: 60 },
+    { stage: 'Offers Extended', value: 50 },
+    { stage: 'Enrolled', value: 45 },
   ],
 };
 
