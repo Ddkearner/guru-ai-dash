@@ -11,8 +11,8 @@ import { Button } from '@/components/ui/button';
 import { BrainCircuit, Loader2 } from 'lucide-react';
 import {
   assessTeacherMorale,
-  type AssessTeacherMoraleOutput,
 } from '@/ai/flows/assess-teacher-morale';
+import type { AssessTeacherMoraleOutput } from '@/ai/schemas/assess-teacher-morale-schema';
 import { useToast } from '@/hooks/use-toast';
 import { teachers } from '@/lib/school-data';
 
@@ -43,7 +43,7 @@ export function TeacherPulse() {
 
     setPulseData((prev) => ({
       ...prev,
-      [teacherId]: { ...prev[teacherId], isLoading: true },
+      [teacherId]: { ...prev[teacherId], isLoading: true, detailedAnalysis: '', suggestedAction: '', moraleLevel: '' },
     }));
 
     try {
@@ -95,8 +95,8 @@ export function TeacherPulse() {
                 <span className="hidden ml-2 sm:inline">Assess</span>
               </Button>
             </div>
-            {pulseData[teacher.id] && !pulseData[teacher.id].isLoading && (
-              <div className="p-3 mt-2 border rounded-md bg-background">
+            {pulseData[teacher.id] && !pulseData[teacher.id].isLoading && pulseData[teacher.id].moraleLevel && (
+              <div className="p-3 mt-2 space-y-3 border rounded-md bg-background">
                 <div className="flex items-center gap-3">
                   <div
                     className={`w-3 h-3 rounded-full ${getPulseColorClass(pulseData[teacher.id].moraleLevel)}`}
@@ -105,9 +105,18 @@ export function TeacherPulse() {
                     {pulseData[teacher.id].moraleLevel} Morale
                   </span>
                 </div>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {pulseData[teacher.id].suggestedAction}
-                </p>
+                <div>
+                  <h4 className="text-sm font-semibold">Detailed Analysis</h4>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {pulseData[teacher.id].detailedAnalysis}
+                  </p>
+                </div>
+                <div>
+                  <h4 className="text-sm font-semibold">Suggested Action</h4>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {pulseData[teacher.id].suggestedAction}
+                  </p>
+                </div>
               </div>
             )}
           </div>

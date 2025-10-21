@@ -4,26 +4,16 @@
  * @fileOverview Generates a daily summary of school activities using AI.
  *
  * - generateDailySchoolSummary - A function that generates the daily summary.
- * - GenerateDailySchoolSummaryInput - The input type for the generateDailySchoolSummary function.
- * - GenerateDailySchoolSummaryOutput - The return type for the generateDailySchoolSummary function.
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import {
+    GenerateDailySchoolSummaryInputSchema,
+    GenerateDailySchoolSummaryOutputSchema,
+    type GenerateDailySchoolSummaryInput,
+    type GenerateDailySchoolSummaryOutput,
+} from '@/ai/schemas/generate-daily-school-summary-schema';
 
-const GenerateDailySchoolSummaryInputSchema = z.object({
-  attendanceRate: z.number().describe('The percentage of students present today.'),
-  feesCollected: z.number().describe('The total amount of fees collected today.'),
-  admissionEnquiries: z.number().describe('The number of admission enquiries received today.'),
-  classPerformance: z.record(z.string(), z.string()).describe('A record of class performances in tests.'),
-  lowAttendanceClasses: z.array(z.string()).describe('An array of class names with low attendance.'),
-});
-export type GenerateDailySchoolSummaryInput = z.infer<typeof GenerateDailySchoolSummaryInputSchema>;
-
-const GenerateDailySchoolSummaryOutputSchema = z.object({
-  summary: z.string().describe('A natural language summary of the day\'s school activities.'),
-});
-export type GenerateDailySchoolSummaryOutput = z.infer<typeof GenerateDailySchoolSummaryOutputSchema>;
 
 export async function generateDailySchoolSummary(input: GenerateDailySchoolSummaryInput): Promise<GenerateDailySchoolSummaryOutput> {
   return generateDailySchoolSummaryFlow(input);

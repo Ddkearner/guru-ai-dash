@@ -16,12 +16,21 @@ import {
   CardTitle,
   CardDescription,
 } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import {
   ChartTooltipContent,
   ChartContainer,
 } from '@/components/ui/chart';
 import { growthData } from '@/lib/school-data';
-import { TrendingUp, Users, DollarSign, BarChart as BarChartIcon } from 'lucide-react';
+import {
+  TrendingUp,
+  Users,
+  DollarSign,
+  BarChart as BarChartIcon,
+  Lightbulb,
+  Loader2,
+  ListChecks,
+} from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -30,6 +39,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
+import {
+  generateGrowthStrategies,
+} from '@/ai/flows/generate-growth-strategies';
+import type { GenerateGrowthStrategiesOutput } from '@/ai/schemas/generate-growth-strategies-schema';
 
 type DataKey = "strength" | "fees" | "enquiries";
 
@@ -37,6 +51,33 @@ export function GrowthRadar() {
   const latestData = growthData[growthData.length - 1];
   const lastYearData = { strength: 800, fees: 7.1, enquiries: 55 }; // Mock last year data
   const [activeMetric, setActiveMetric] = useState<DataKey>('strength');
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+  const [analysis, setAnalysis] = useState<GenerateGrowthStrategiesOutput | null>(
+    null
+  );
+
+  const handleGenerateStrategies = async () => {
+    setIsLoading(true);
+    setAnalysis(null);
+    try {
+      const result = await generateGrowthStrategies({
+        growthData,
+        activeMetric,
+      });
+      setAnalysis(result);
+    } catch (error) {
+      console.error(error);
+      toast({
+        variant: 'destructive',
+        title: 'Error generating strategies',
+        description: 'An unexpected error occurred. Please try again.',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
 
   const chartConfig = {
     strength: { label: 'Students', color: 'hsl(var(--chart-1))' },
@@ -115,6 +156,47 @@ export function GrowthRadar() {
               </BarChart>
             </ResponsiveContainer>
           </ChartContainer>
+        </div>
+        <div className="p-4 border-t">
+           <h4 className="mb-3 text-lg font-semibold font-headline">
+            AI Strategy Assistant
+          </h4>
+          <Button
+            onClick={handleGenerateStrategies}
+            disabled={isLoading}
+            className="w-full"
+          >
+            {isLoading ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <Lightbulb className="w-4 h-4 mr-2" />
+            )}
+            Generate Growth Strategies for {chartConfig[activeMetric].label}
+          </Button>
+
+           {analysis && !isLoading && (
+            <div className="mt-4 space-y-4">
+              <div>
+                <h5 className="font-semibold">Trend Analysis</h5>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {analysis.analysis}
+                </p>
+              </div>
+              <div>
+                <h5 className="font-semibold">Suggested Strategies</h5>
+                <ul className="mt-2 space-y-2">
+                  {analysis.suggestions.map((suggestion, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <ListChecks className="w-4 h-4 mt-1 text-success shrink-0" />
+                      <span className="text-sm text-muted-foreground">
+                        {suggestion}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>
