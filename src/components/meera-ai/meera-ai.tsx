@@ -13,7 +13,7 @@ export function MeeraAi({ addTask }: { addTask: (task: Task) => void }) {
   return (
     <>
       <Button
-        className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-50"
+        className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-50 bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 text-white hover:opacity-90 transition-opacity"
         size="icon"
         onClick={() => setIsPanelOpen(true)}
       >
