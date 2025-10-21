@@ -12,7 +12,7 @@ export function WelcomeHeader() {
 
   return (
     <div className="p-6 rounded-lg bg-card border shadow-sm">
-      <h2 className="text-2xl font-bold text-foreground font-headline">
+      <h2 className="text-2xl font-bold text-card-foreground font-headline">
         Welcome back, Principal!
       </h2>
       <p className="mt-1 text-muted-foreground">
