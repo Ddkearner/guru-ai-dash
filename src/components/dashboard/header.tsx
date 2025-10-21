@@ -16,7 +16,7 @@ export function DashboardHeader({ openReportDialog }: { openReportDialog: () => 
         </h1>
       </div>
       <div className="flex items-center gap-4">
-        <Button variant="outline" onClick={openReportDialog}>
+        <Button onClick={openReportDialog} className="bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 text-white hover:opacity-90 transition-opacity">
             <Wand className="w-4 h-4 mr-2" />
             AI School Report
         </Button>

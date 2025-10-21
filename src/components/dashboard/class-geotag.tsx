@@ -68,7 +68,7 @@ function LocationAnalysis({ locationName }: { locationName: string }) {
       <Button
         onClick={handleGenerateAnalysis}
         disabled={isLoading}
-        className="w-full mb-4"
+        className="w-full mb-4 bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 text-white hover:opacity-90 transition-opacity"
       >
         {isLoading ? (
           <Loader2 className="w-4 h-4 mr-2 animate-spin" />
