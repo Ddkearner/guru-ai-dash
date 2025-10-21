@@ -1,8 +1,8 @@
 'use client';
 
 import {
-  Area,
-  AreaChart,
+  Bar,
+  BarChart,
   CartesianGrid,
   ResponsiveContainer,
   Tooltip,
@@ -21,85 +21,98 @@ import {
   ChartContainer,
 } from '@/components/ui/chart';
 import { growthData } from '@/lib/school-data';
-import { ArrowUp, Users, DollarSign, BarChart } from 'lucide-react';
+import { TrendingUp, Users, DollarSign, BarChart as BarChartIcon } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { useState } from 'react';
 
-const chartConfig = {
-  admissions: {
-    label: 'Admissions',
-    color: 'hsl(var(--chart-1))',
-  },
-  fees: {
-    label: 'Fees (Lakhs)',
-    color: 'hsl(var(--chart-2))',
-  },
-};
+type DataKey = "strength" | "fees" | "enquiries";
 
 export function GrowthRadar() {
   const latestData = growthData[growthData.length - 1];
-  const lastYearData = { strength: 800, enquiries: 55 }; // Mock last year data
+  const lastYearData = { strength: 800, fees: 7.1, enquiries: 55 }; // Mock last year data
+  const [activeMetric, setActiveMetric] = useState<DataKey>('strength');
+
+  const chartConfig = {
+    strength: { label: 'Students', color: 'hsl(var(--chart-1))' },
+    fees: { label: 'Fees (Lakhs)', color: 'hsl(var(--chart-2))' },
+    enquiries: { label: 'Enquiries', color: 'hsl(var(--chart-3))' },
+  };
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="font-headline">Growth Radar</CardTitle>
-        <CardDescription>
-          Tracking key metrics for school growth over the last 6 months.
-        </CardDescription>
+        <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <CardTitle className="font-headline">Growth Radar</CardTitle>
+            <CardDescription>
+              Key growth metrics over the last 6 months.
+            </CardDescription>
+          </div>
+          <Select value={activeMetric} onValueChange={(value) => setActiveMetric(value as DataKey)}>
+            <SelectTrigger className="w-full sm:w-[180px]">
+              <SelectValue placeholder="Select Metric" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="strength">Student Strength</SelectItem>
+              <SelectItem value="fees">Fee Collection</SelectItem>
+              <SelectItem value="enquiries">Enquiries</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid gap-4 sm:grid-cols-3">
-          <div className="p-4 border rounded-lg">
+          <div className={`p-4 border-2 rounded-lg transition-all ${activeMetric === 'strength' ? 'border-primary' : 'border-border'}`}>
             <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
               <Users className="w-4 h-4" /> Student Strength
             </div>
             <div className="mt-2 text-2xl font-bold">{latestData.strength}</div>
             <div className="flex items-center text-xs text-success">
-              <ArrowUp className="w-3 h-3 mr-1" />
+              <TrendingUp className="w-3 h-3 mr-1" />
               {(((latestData.strength - lastYearData.strength) / lastYearData.strength) * 100).toFixed(1)}% vs LY
             </div>
           </div>
-          <div className="p-4 border rounded-lg">
-             <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+          <div className={`p-4 border-2 rounded-lg transition-all ${activeMetric === 'fees' ? 'border-primary' : 'border-border'}`}>
+            <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
               <DollarSign className="w-4 h-4" /> Fee Collection
             </div>
             <div className="mt-2 text-2xl font-bold">₹{latestData.fees}L</div>
-             <div className="flex items-center text-xs text-success">
-              <ArrowUp className="w-3 h-3 mr-1" />
-              15.2% vs LY
+            <div className="flex items-center text-xs text-success">
+              <TrendingUp className="w-3 h-3 mr-1" />
+              {(((latestData.fees - lastYearData.fees) / lastYearData.fees) * 100).toFixed(1)}% vs LY
             </div>
           </div>
-          <div className="p-4 border rounded-lg">
-             <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-              <BarChart className="w-4 h-4" /> Enquiries
+          <div className={`p-4 border-2 rounded-lg transition-all ${activeMetric === 'enquiries' ? 'border-primary' : 'border-border'}`}>
+            <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+              <BarChartIcon className="w-4 h-4" /> Enquiries
             </div>
             <div className="mt-2 text-2xl font-bold">{latestData.enquiries}</div>
-             <div className="flex items-center text-xs text-success">
-              <ArrowUp className="w-3 h-3 mr-1" />
+            <div className="flex items-center text-xs text-success">
+              <TrendingUp className="w-3 h-3 mr-1" />
               {(((latestData.enquiries - lastYearData.enquiries) / lastYearData.enquiries) * 100).toFixed(1)}% vs LY
             </div>
           </div>
         </div>
-        <div className="h-[200px] w-full">
-          <ChartContainer config={chartConfig}>
+        <div className="h-[250px] w-full">
+          <ChartContainer config={chartConfig} className="h-full w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={growthData} margin={{ right: 12, left: -20 }}>
+              <BarChart data={growthData} margin={{ top: 20, right: 10, left: -20, bottom: 5 }}>
                 <CartesianGrid vertical={false} />
                 <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} />
                 <YAxis />
-                <Tooltip cursor={false} content={<ChartTooltipContent />} />
-                <defs>
-                  <linearGradient id="fillAdmissions" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="var(--color-admissions)" stopOpacity={0.8} />
-                    <stop offset="95%" stopColor="var(--color-admissions)" stopOpacity={0.1} />
-                  </linearGradient>
-                  <linearGradient id="fillFees" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="var(--color-fees)" stopOpacity={0.8} />
-                    <stop offset="95%" stopColor="var(--color-fees)" stopOpacity={0.1} />
-                  </linearGradient>
-                </defs>
-                <Area type="monotone" dataKey="admissions" stroke="var(--color-admissions)" fill="url(#fillAdmissions)" strokeWidth={2} />
-                <Area type="monotone" dataKey="fees" stroke="var(--color-fees)" fill="url(#fillFees)" strokeWidth={2} />
-              </AreaChart>
+                <Tooltip cursor={{ fill: 'hsl(var(--muted))' }} content={<ChartTooltipContent />} />
+                <Bar 
+                  dataKey={activeMetric} 
+                  fill={chartConfig[activeMetric].color} 
+                  radius={[4, 4, 0, 0]} 
+                />
+              </BarChart>
             </ResponsiveContainer>
           </ChartContainer>
         </div>

@@ -65,14 +65,14 @@ export const growthData = [
 
 export const admissionFunnelData = {
   thisMonth: [
-    { name: 'Enquiries', value: 100 },
-    { name: 'Forms Filled', value: 50 },
-    { name: 'Joined', value: 25 },
+    { stage: 'Enquiries', value: 100 },
+    { stage: 'Forms Filled', value: 50 },
+    { stage: 'Joined', value: 25 },
   ],
   lastMonth: [
-    { name: 'Enquiries', value: 85 },
-    { name: 'Forms Filled', value: 40 },
-    { name: 'Joined', value: 18 },
+    { stage: 'Enquiries', value: 85 },
+    { stage: 'Forms Filled', value: 40 },
+    { stage: 'Joined', value: 18 },
   ],
 };
 
@@ -128,10 +128,10 @@ export const examHeatmapData = [
 const studentImages = PlaceHolderImages;
 
 export const dropoutData = [
-  { id: 'stud1', name: 'Rahul Kumar', class: '9A', roll: 23, performanceChange: -25, image: studentImages.find(i => i.id === 'student-1')?.imageUrl },
-  { id: 'stud2', name: 'Sneha Patel', class: '8B', roll: 12, performanceChange: -18, image: studentImages.find(i => i.id === 'student-2')?.imageUrl },
-  { id: 'stud3', name: 'Amit Singh', class: '9C', roll: 31, performanceChange: -32, image: studentImages.find(i => i.id === 'student-3')?.imageUrl },
-  { id: 'stud4', name: 'Priya Sharma', class: '7A', roll: 5, performanceChange: -22, image: studentImages.find(i => i.id === 'student-4')?.imageUrl },
+  { id: 'stud1', name: 'Rahul Kumar', class: '9A', roll: 23, performanceChange: -25, image: studentImages.find(i => i.id === 'student-1')?.imageUrl, attendance: 75, feeStatus: 'Pending', grades: [{subject: 'Math', score: 45}, {subject: 'Science', score: 55}, {subject: 'English', score: 60}, {subject: 'History', score: 50}] },
+  { id: 'stud2', name: 'Sneha Patel', class: '8B', roll: 12, performanceChange: -18, image: studentImages.find(i => i.id === 'student-2')?.imageUrl, attendance: 85, feeStatus: 'Paid', grades: [{subject: 'Math', score: 60}, {subject: 'Science', score: 65}, {subject: 'English', score: 70}, {subject: 'History', score: 62}] },
+  { id: 'stud3', name: 'Amit Singh', class: '9C', roll: 31, performanceChange: -32, image: studentImages.find(i => i.id === 'student-3')?.imageUrl, attendance: 60, feeStatus: 'Pending', grades: [{subject: 'Math', score: 35}, {subject: 'Science', score: 40}, {subject: 'English', score: 52}, {subject: 'History', score: 45}] },
+  { id: 'stud4', name: 'Priya Sharma', class: '7A', roll: 5, performanceChange: -22, image: studentImages.find(i => i.id === 'student-4')?.imageUrl, attendance: 90, feeStatus: 'Paid', grades: [{subject: 'Math', score: 55}, {subject: 'Science', score: 62}, {subject: 'English', score: 75}, {subject: 'History', score: 68}] },
 ];
 
 export const teachers = [
