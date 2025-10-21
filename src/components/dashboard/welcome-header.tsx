@@ -12,7 +12,12 @@ import {
   BarChart,
 } from 'lucide-react';
 
-export function WelcomeHeader() {
+type WelcomeHeaderProps = {
+  onNewTask: () => void;
+  onQuickReport: () => void;
+};
+
+export function WelcomeHeader({ onNewTask, onQuickReport }: WelcomeHeaderProps) {
   const [currentDate, setCurrentDate] = useState('');
 
   useEffect(() => {
@@ -35,13 +40,12 @@ export function WelcomeHeader() {
         Here's your overview for {currentDate}. Let's make it a great day.
       </p>
       <div className="mt-6 flex flex-wrap gap-2">
-        {/* TODO: Wire these buttons up to their respective functionalities */}
-        <ActionButton icon={PlusCircle} label="New Task" onClick={() => handleActionClick("New Task")} />
+        <ActionButton icon={PlusCircle} label="New Task" onClick={onNewTask} />
         <ActionButton icon={CalendarPlus} label="New Event" onClick={() => handleActionClick("New Event")} />
         <ActionButton icon={UserPlus} label="Add Student" onClick={() => handleActionClick("Add Student")} />
-        <ActionButton icon={FileText} label="Quick Report" onClick={() => handleActionClick("Quick Report")} />
+        <ActionButton icon={FileText} label="Quick Report" onClick={onQuickReport} />
         <ActionButton icon={CheckSquare} label="Attendance" onClick={() => handleActionClick("Attendance")} />
-        <ActionButton icon={BarChart} label="View Reports" onClick={() => handleActionClick("View Reports")} />
+        <ActionButton icon={BarChart} label="View Reports" onClick={onQuickReport} />
       </div>
     </div>
   );

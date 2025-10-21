@@ -1,8 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Logo } from '@/components/icons/logo';
 import { AiReportGenerator } from './ai-report-generator';
+import { Button } from '../ui/button';
+import { Wand } from 'lucide-react';
 
-export function DashboardHeader() {
+export function DashboardHeader({ openReportDialog }: { openReportDialog: () => void }) {
   return (
     <header className="flex items-center justify-between p-4 border-b sticky top-0 bg-background/80 backdrop-blur-sm z-10">
       <div className="flex items-center gap-3">
@@ -14,7 +16,10 @@ export function DashboardHeader() {
         </h1>
       </div>
       <div className="flex items-center gap-4">
-        <AiReportGenerator />
+        <Button variant="outline" onClick={openReportDialog}>
+            <Wand className="w-4 h-4 mr-2" />
+            AI School Report
+        </Button>
         <Avatar>
           <AvatarImage
             src="https://picsum.photos/seed/principal/100/100"

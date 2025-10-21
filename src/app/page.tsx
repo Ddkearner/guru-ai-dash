@@ -14,9 +14,12 @@ import { TeacherPulse } from '@/components/dashboard/teacher-pulse';
 import { todoTasks as initialTodoTasks, Task } from '@/lib/school-data';
 import { MeeraAi } from '@/components/meera-ai/meera-ai';
 import { WelcomeHeader } from '@/components/dashboard/welcome-header';
+import { AiReportGenerator } from '@/components/dashboard/ai-report-generator';
 
 export default function Home() {
   const [tasks, setTasks] = useState<Task[]>(initialTodoTasks);
+  const [isNewTaskDialogOpen, setIsNewTaskDialogOpen] = useState(false);
+  const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
   
   const addTask = (newTask: Task) => {
     setTasks(prevTasks => [newTask, ...prevTasks]);
@@ -24,16 +27,24 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      <DashboardHeader />
+      <DashboardHeader openReportDialog={() => setIsReportDialogOpen(true)} />
       <main className="flex-1 p-4 md:p-6 lg:p-8">
-        <WelcomeHeader />
+        <WelcomeHeader 
+          onNewTask={() => setIsNewTaskDialogOpen(true)}
+          onQuickReport={() => setIsReportDialogOpen(true)}
+        />
         <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-4">
           <div className="lg:col-span-4">
             <SummaryCards />
           </div>
 
           <div className="lg:col-span-2">
-            <TodoList tasks={tasks} setTasks={setTasks} />
+            <TodoList
+              tasks={tasks}
+              setTasks={setTasks}
+              isDialogOpen={isNewTaskDialogOpen}
+              setIsDialogOpen={setIsNewTaskDialogOpen}
+            />
           </div>
 
           <div className="lg:col-span-2">
@@ -70,6 +81,7 @@ export default function Home() {
         </div>
       </main>
       <MeeraAi addTask={addTask} />
+      <AiReportGenerator open={isReportDialogOpen} onOpenChange={setIsReportDialogOpen} />
     </div>
   );
 }

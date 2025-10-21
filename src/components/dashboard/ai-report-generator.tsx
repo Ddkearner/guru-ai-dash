@@ -1,14 +1,5 @@
 'use client';
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -16,26 +7,29 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import { Wand, Loader2, FileText, BarChart, Users } from 'lucide-react';
+import { Loader2, FileText } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { generateSchoolReport } from '@/ai/flows/generate-school-report';
 import type { GenerateSchoolReportOutput } from '@/ai/schemas/generate-school-report-schema';
 import * as Data from '@/lib/school-data';
 
-type ReportScope = 'school' | 'Class 10' | 'Class 9' | 'Class 8';
-
-export function AiReportGenerator() {
-  const [open, setOpen] = useState(false);
+export function AiReportGenerator({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const [report, setReport] = useState<GenerateSchoolReportOutput | null>(null);
   const [reportTitle, setReportTitle] = useState('');
   const { toast } = useToast();
 
-  const handleGenerateReport = async (scope: ReportScope) => {
+  const handleGenerateReport = async (scope: string) => {
     setIsLoading(true);
     setReport(null);
     setReportTitle(`AI Report for ${scope}`);
-    setOpen(true);
+    onOpenChange(true);
 
     try {
       const result = await generateSchoolReport({
@@ -49,7 +43,7 @@ export function AiReportGenerator() {
       setReport(result);
     } catch (error) {
       console.error(error);
-      setOpen(false);
+      onOpenChange(false);
       toast({
         variant: 'destructive',
         title: 'Error generating report',
@@ -60,39 +54,31 @@ export function AiReportGenerator() {
       setIsLoading(false);
     }
   };
+  
+  // This component is now a Dialog controlled by parent state
+  // The DropdownMenu trigger is now part of the header
+  // A new `handleGenerateReport` function is passed for explicit triggers
+  // We can add a simple trigger here for now for any other places it might be used
+  // but the main trigger is in the header.
+
+  // We are using `useEffect` to trigger the report generation when the dialog opens
+  // This is a bit of a workaround because we can't easily pass the scope
+  // A better solution might involve a global state manager (like Zustand or Redux)
+  // or a more complex prop-drilling system.
+  React.useEffect(() => {
+    if (open && !isLoading && !report) {
+      // Default to school report if opened without a specific scope
+      handleGenerateReport('School');
+    }
+     if (!open) {
+      // Reset report when dialog is closed
+      setReport(null);
+    }
+  }, [open]);
+
 
   return (
-    <>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline">
-            <Wand className="w-4 h-4 mr-2" />
-            AI School Report
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuLabel>Generate Detailed Report</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => handleGenerateReport('school')}>
-            <BarChart className="w-4 h-4 mr-2" />
-            Full School Report
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleGenerateReport('Class 10')}>
-            <Users className="w-4 h-4 mr-2" />
-            Class 10 Report
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleGenerateReport('Class 9')}>
-            <Users className="w-4 h-4 mr-2" />
-            Class 9 Report
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleGenerateReport('Class 8')}>
-            <Users className="w-4 h-4 mr-2" />
-            Class 8 Report
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="max-w-3xl h-[90vh] flex flex-col">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
@@ -156,6 +142,5 @@ export function AiReportGenerator() {
           </div>
         </DialogContent>
       </Dialog>
-    </>
   );
 }

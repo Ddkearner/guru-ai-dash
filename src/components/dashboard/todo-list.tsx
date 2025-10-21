@@ -28,11 +28,14 @@ import { PersonStanding } from 'lucide-react';
 export function TodoList({
   tasks,
   setTasks,
+  isDialogOpen,
+  setIsDialogOpen,
 }: {
   tasks: Task[];
   setTasks: (tasks: Task[]) => void;
+  isDialogOpen: boolean;
+  setIsDialogOpen: (open: boolean) => void;
 }) {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [newTaskDescription, setNewTaskDescription] = useState('');
 
