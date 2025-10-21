@@ -7,6 +7,7 @@ import {
   MessageSquareWarning,
   type LucideIcon,
   Presentation,
+  PersonStanding,
 } from 'lucide-react';
 
 export type Task = {
@@ -15,19 +16,20 @@ export type Task = {
   description: string;
   icon: LucideIcon;
   href: string;
+  isUserAdded?: boolean;
 };
 
 export const todoTasks: Task[] = [
   {
     id: 'task1',
-    title: 'Review 8 new admission enquiries',
+    title: 'Review 12 new admission enquiries',
     icon: UserPlus,
     description: 'Respond to new parent queries.',
     href: '#',
   },
   {
     id: 'task2',
-    title: 'Approve 15 pending fee payments',
+    title: 'Approve 25 pending fee payments',
     icon: CircleDollarSign,
     description: 'Awaiting confirmation for monthly fees.',
     href: '#',
@@ -41,14 +43,14 @@ export const todoTasks: Task[] = [
   },
   {
     id: 'task4',
-    title: 'Review Class 8 Mid-term results',
+    title: 'Review Class 9 Mid-term results',
     icon: FileText,
     description: 'Results to be published by Friday.',
     href: '#',
   },
   {
     id: 'task5',
-    title: 'Address 3 new parent complaints',
+    title: 'Address 2 new parent complaints',
     icon: MessageSquareWarning,
     description: 'Regarding bus routes and cafeteria food.',
     href: '#',
@@ -108,7 +110,37 @@ export const geotagData = {
 };
 
 export const examHeatmapData = [
+  {
+    class: 'Class 12',
+    passed: 48,
+    failed: 2,
+    change: 5,
+    subjects: [
+      { name: 'Physics', passRate: 96, topScorer: 'Alok Nath', weakStudents: 2 },
+      { name: 'Chemistry', passRate: 98, topScorer: 'Riya Jain', weakStudents: 1 },
+      { name: 'Mathematics', passRate: 92, topScorer: 'Riya Jain', weakStudents: 4 },
+      { name: 'English', passRate: 100, topScorer: 'Alok Nath', weakStudents: 0 },
+    ],
+    toppers: ['Riya Jain', 'Alok Nath', 'Simran'],
+    weakest: ['Vikas', 'Pooja'],
+    mostFailedSubject: 'Mathematics',
+  },
     {
+    class: 'Class 11',
+    passed: 45,
+    failed: 5,
+    change: 2,
+    subjects: [
+      { name: 'Physics', passRate: 90, topScorer: 'Rohan Mehra', weakStudents: 5 },
+      { name: 'Chemistry', passRate: 92, topScorer: 'Sneha Verma', weakStudents: 4 },
+      { name: 'Mathematics', passRate: 88, topScorer: 'Rohan Mehra', weakStudents: 6 },
+      { name: 'English', passRate: 94, topScorer: 'Aditi Singh', weakStudents: 3 },
+    ],
+    toppers: ['Rohan Mehra', 'Sneha Verma', 'Aditi Singh'],
+    weakest: ['Rajesh Kumar', 'Anita Desai', 'Mohit'],
+    mostFailedSubject: 'Mathematics',
+  },
+  {
     class: 'Class 10',
     passed: 46,
     failed: 4,
@@ -164,6 +196,8 @@ export const dropoutData = [
   { id: 'stud4', name: 'Priya Sharma', class: '7A', roll: 5, performanceChange: -22, image: studentImages.find(i => i.id === 'student-4')?.imageUrl, attendance: 90, feeStatus: 'Paid', grades: [{subject: 'Math', score: 55}, {subject: 'Science', score: 62}, {subject: 'English', score: 75}, {subject: 'History', score: 68}] },
   { id: 'stud5', name: 'Karan Verma', class: '9B', roll: 18, performanceChange: -28, image: "https://picsum.photos/seed/stud5/100/100", attendance: 70, feeStatus: 'Paid', grades: [{subject: 'Math', score: 40}, {subject: 'Science', score: 50}, {subject: 'English', score: 65}, {subject: 'History', score: 55}] },
   { id: 'stud6', name: 'Anjali Gupta', class: '10A', roll: 3, performanceChange: -15, image: "https://picsum.photos/seed/stud6/100/100", attendance: 88, feeStatus: 'Paid', grades: [{subject: 'Math', score: 70}, {subject: 'Science', score: 65}, {subject: 'English', score: 80}, {subject: 'History', score: 72}] },
+  { id: 'stud7', name: 'Sanjay Dutt', class: '11B', roll: 15, performanceChange: -20, image: "https://picsum.photos/seed/stud7/100/100", attendance: 78, feeStatus: 'Pending', grades: [{subject: 'Physics', score: 50}, {subject: 'Chemistry', score: 58}, {subject: 'Math', score: 62}, {subject: 'English', score: 65}] },
+  { id: 'stud8', name: 'Alia Bhatt', class: '12A', roll: 1, performanceChange: -10, image: "https://picsum.photos/seed/stud8/100/100", attendance: 92, feeStatus: 'Paid', grades: [{subject: 'Physics', score: 80}, {subject: 'Chemistry', score: 85}, {subject: 'Math', score: 75}, {subject: 'English', score: 88}] },
 ];
 
 export const teachers = [
@@ -172,4 +206,7 @@ export const teachers = [
     { id: 't3', name: 'Mr. Singh (History)', metrics: { attendanceRate: 0.85, onTimeClassesRate: 0.7, examPerformance: 0.6, complaintsReceived: 5 } },
     { id: 't4', name: 'Mrs. Devi (English)', metrics: { attendanceRate: 0.99, onTimeClassesRate: 0.98, examPerformance: 0.92, complaintsReceived: 1 } },
     { id: 't5', name: 'Mr. Khan (Physics)', metrics: { attendanceRate: 0.91, onTimeClassesRate: 0.95, examPerformance: 0.85, complaintsReceived: 3 } },
+    { id: 't6', name: 'Ms. Reddy (Chemistry)', metrics: { attendanceRate: 0.96, onTimeClassesRate: 0.99, examPerformance: 0.88, complaintsReceived: 1 } },
+    { id: 't7', name: 'Mr. Verma (Biology)', metrics: { attendanceRate: 0.93, onTimeClassesRate: 0.92, examPerformance: 0.82, complaintsReceived: 4 } },
+
 ];
