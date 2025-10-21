@@ -18,11 +18,14 @@ import {
   ListChecks,
   Eye,
   Award,
+  ChevronDown,
+  X
 } from 'lucide-react';
 import { admissionFunnelData } from '@/lib/school-data';
 import { useToast } from '@/hooks/use-toast';
 import { analyzeAdmissionFunnel } from '@/ai/flows/analyze-admission-funnel';
 import type { AnalyzeAdmissionFunelOutput } from '@/ai/schemas/analyze-admission-funnel-schema';
+import { cn } from '@/lib/utils';
 
 type FunnelStage = {
   stage: string;
@@ -99,10 +102,13 @@ export function AdmissionFunnel() {
   const [analysis, setAnalysis] = useState<AnalyzeAdmissionFunelOutput | null>(
     null
   );
+  const [isAnalysisExpanded, setIsAnalysisExpanded] = useState(false);
+
 
   const handleGenerateAnalysis = async () => {
     setIsLoading(true);
     setAnalysis(null);
+    setIsAnalysisExpanded(false);
     try {
       const result = await analyzeAdmissionFunnel(admissionFunnelData);
       setAnalysis(result);
@@ -151,26 +157,56 @@ export function AdmissionFunnel() {
           </Button>
 
           {analysis && !isLoading && (
-            <div className="mt-4 space-y-4">
+            <div className="mt-4 p-4 border rounded-lg bg-secondary/30 relative">
+              <Button variant="ghost" size="icon" className="absolute top-2 right-2 h-6 w-6" onClick={() => setAnalysis(null)}>
+                <X className="h-4 w-4" />
+              </Button>
               <div>
-                <h5 className="font-semibold">Analysis</h5>
-                <p className="mt-1 text-sm text-muted-foreground">
+                <h5 className="font-semibold pr-8">Analysis</h5>
+                <p
+                  className={cn(
+                    'mt-1 text-sm text-muted-foreground transition-all duration-300',
+                    !isAnalysisExpanded && 'line-clamp-2'
+                  )}
+                >
                   {analysis.analysis}
                 </p>
               </div>
-              <div>
-                <h5 className="font-semibold">Suggested Strategies</h5>
-                <ul className="mt-2 space-y-2">
-                  {analysis.suggestions.map((suggestion, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <ListChecks className="w-4 h-4 mt-1 text-success shrink-0" />
-                      <span className="text-sm text-muted-foreground">
-                        {suggestion}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+              <div
+                className={cn(
+                  'space-y-4 transition-all duration-300',
+                  isAnalysisExpanded
+                    ? 'max-h-96 opacity-100 mt-4'
+                    : 'max-h-0 opacity-0 overflow-hidden'
+                )}
+              >
+                <div>
+                  <h5 className="font-semibold">Suggested Strategies</h5>
+                  <ul className="mt-2 space-y-2">
+                    {analysis.suggestions.map((suggestion, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <ListChecks className="w-4 h-4 mt-1 text-success shrink-0" />
+                        <span className="text-sm text-muted-foreground">
+                          {suggestion}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
+              <Button
+                variant="link"
+                onClick={() => setIsAnalysisExpanded(!isAnalysisExpanded)}
+                className="p-0 h-auto mt-2 text-sm"
+              >
+                <ChevronDown
+                  className={cn(
+                    'w-4 h-4 mr-1 transition-transform',
+                    isAnalysisExpanded && 'rotate-180'
+                  )}
+                />
+                {isAnalysisExpanded ? 'Show Less' : 'Show More'}
+              </Button>
             </div>
           )}
         </div>
@@ -178,3 +214,5 @@ export function AdmissionFunnel() {
     </Card>
   );
 }
+
+    
