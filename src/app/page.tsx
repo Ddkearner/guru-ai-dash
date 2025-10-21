@@ -13,6 +13,7 @@ import { DropoutRadar } from '@/components/dashboard/dropout-radar';
 import { TeacherPulse } from '@/components/dashboard/teacher-pulse';
 import { todoTasks as initialTodoTasks, Task } from '@/lib/school-data';
 import { MeeraAi } from '@/components/meera-ai/meera-ai';
+import { WelcomeHeader } from '@/components/dashboard/welcome-header';
 
 export default function Home() {
   const [tasks, setTasks] = useState<Task[]>(initialTodoTasks);
@@ -25,7 +26,8 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-background">
       <DashboardHeader />
       <main className="flex-1 p-4 md:p-6 lg:p-8">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
+        <WelcomeHeader />
+        <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-4">
           <div className="lg:col-span-4">
             <SummaryCards />
           </div>
