@@ -34,7 +34,7 @@ export function WelcomeHeader() {
       <p className="mt-1 text-blue-200">
         Here's your overview for {currentDate}. Let's make it a great day.
       </p>
-      <div className="mt-6 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 sm:gap-3 max-w-lg">
+      <div className="mt-6 flex flex-wrap gap-2">
         {/* TODO: Wire these buttons up to their respective functionalities */}
         <ActionButton icon={PlusCircle} label="New Task" onClick={() => handleActionClick("New Task")} />
         <ActionButton icon={CalendarPlus} label="New Event" onClick={() => handleActionClick("New Event")} />
@@ -51,11 +51,11 @@ function ActionButton({ icon: Icon, label, onClick }: { icon: React.ElementType,
   return (
     <Button
       variant="ghost"
-      className="flex flex-col items-center justify-center h-16 gap-1 p-1 text-white transition-all rounded-lg bg-white/5 hover:bg-white/10 border border-white/10"
+      className="flex-row items-center justify-start h-8 px-2 py-1 text-white transition-all rounded-md bg-white/5 hover:bg-white/10 border border-white/10"
       onClick={onClick}
     >
-      <Icon className="w-4 h-4" />
-      <span className="text-[10px] font-medium text-center">{label}</span>
+      <Icon className="w-3.5 h-3.5 mr-1.5" />
+      <span className="text-[11px] font-medium text-center whitespace-nowrap">{label}</span>
     </Button>
   );
 }
