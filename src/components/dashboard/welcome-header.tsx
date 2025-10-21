@@ -51,10 +51,10 @@ function ActionButton({ icon: Icon, label, onClick }: { icon: React.ElementType,
   return (
     <Button
       variant="ghost"
-      className="flex flex-col items-center justify-center h-20 gap-2 p-2 text-white transition-all bg-white/5 hover:bg-white/10 border border-white/10"
+      className="flex flex-col items-center justify-center h-16 gap-1 p-2 text-white transition-all bg-white/5 hover:bg-white/10 border border-white/10"
       onClick={onClick}
     >
-      <Icon className="w-6 h-6" />
+      <Icon className="w-5 h-5" />
       <span className="text-xs font-medium">{label}</span>
     </Button>
   );
