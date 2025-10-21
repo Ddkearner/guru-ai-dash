@@ -25,11 +25,6 @@ export function WelcomeHeader({ onNewTask, onQuickReport, onNewEvent }: WelcomeH
     setCurrentDate(format(new Date(), 'EEEE, MMMM do, yyyy'));
   }, []);
 
-  const handleActionClick = (action: string) => {
-    // This is a placeholder for actions that are not yet implemented.
-    alert(`Action clicked: ${action}`);
-  };
-
   return (
     <div className="p-6 rounded-lg border shadow-sm bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900">
       <h2 className="text-2xl font-bold text-white font-headline">
@@ -41,9 +36,9 @@ export function WelcomeHeader({ onNewTask, onQuickReport, onNewEvent }: WelcomeH
       <div className="mt-6 flex flex-wrap gap-2">
         <ActionButton icon={PlusCircle} label="New Task" onClick={onNewTask} />
         <ActionButton icon={CalendarPlus} label="New Event" onClick={onNewEvent} />
-        <ActionButton icon={UserPlus} label="Add Student" onClick={() => handleActionClick("Add Student")} />
+        <ActionButton icon={UserPlus} label="Add Student" onClick={() => alert("Add Student functionality coming soon!")} />
         <ActionButton icon={FileText} label="Quick Report" onClick={onQuickReport} />
-        <ActionButton icon={CheckSquare} label="Attendance" onClick={() => handleActionClick("Attendance")} />
+        <ActionButton icon={CheckSquare} label="Attendance" onClick={() => alert("Attendance functionality coming soon!")} />
         <ActionButton icon={BarChart} label="View Reports" onClick={onQuickReport} />
       </div>
     </div>
