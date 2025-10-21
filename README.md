@@ -99,52 +99,31 @@ The application will be available at **http://localhost:3000**.
 
 ### Deploying to cPanel or Similar Shared Hosting
 
-Deploying a Next.js application to a traditional shared hosting environment like cPanel requires exporting it as a static site or running it as a Node.js application.
+To get the full functionality of this application, including the AI features, you need to run it in a Node.js environment. Many cPanel providers offer a "Setup Node.js App" feature, which is the recommended method.
 
-#### Option 1: Static Export (Recommended for simplicity if no server-side features are needed)
+**Important:** This app requires a server to run its AI features, so it cannot be deployed as a simple static website.
 
-If your app does not require server-side rendering (which this app currently does for its AI flows), you can export it to static HTML/CSS/JS files.
-
-1.  **Configure `next.config.ts` for static export:**
-    Add `output: 'export'` to your `next.config.ts` file.
-    ```ts
-    const nextConfig: NextConfig = {
-      output: 'export',
-      // ... other configurations
-    };
-    ```
-2.  **Build the static site:**
-    ```sh
-    npm run build
-    ```
-    This will create an `out` directory containing all the static files.
-
-3.  **Upload to cPanel:**
-    -   Log in to your cPanel.
-    -   Open the "File Manager".
-    -   Navigate to your `public_html` directory.
-    -   Upload the contents of the `out` folder into `public_html`.
-
-#### Option 2: Running as a Node.js Application
-
-For full functionality, including the AI server-side flows, you need to run the app in a Node.js environment. Many cPanel providers offer a "Setup Node.js App" feature.
+#### Running as a Node.js Application
 
 1.  **Upload Project Files:**
-    -   Upload all your project files (except `node_modules` and `.next`) to a directory in your cPanel file manager (e.g., `/home/youruser/my-next-app`).
+    -   Zip all your project files and folders, but **do not include** the `node_modules` or `.next` directories.
+    -   Log in to your cPanel and open the "File Manager".
+    -   Navigate to a new directory for your app (e.g., `/home/youruser/my-next-app`) and upload the zip file.
+    -   Unzip the file.
 
 2.  **Set up the Node.js App in cPanel:**
-    -   Find and open the "Setup Node.js App" tool.
-    -   Create a new application.
+    -   Find and open the "Setup Node.js App" tool in cPanel.
+    -   Click "Create Application".
     -   Set the "Application root" to the directory where you uploaded your files (e.g., `my-next-app`).
     -   Set the "Application startup file" to `node_modules/.bin/next`.
     -   Set the "Application mode" to `production`.
-    -   Add your `GEMINI_API_KEY` in the "Environment Variables" section.
+    -   In the "Environment Variables" section, add your `GEMINI_API_KEY`.
     -   Click "Create".
 
 3.  **Install Dependencies and Build:**
-    -   cPanel provides a terminal or commands to run. Execute the following in your application root:
+    -   The Node.js app interface in cPanel usually provides a command to run. Use it to execute the following in your application root:
         ```sh
         npm install
         npm run build
         ```
-    -   Once done, restart the application from the cPanel interface. Your app should now be live.
+    -   Once the commands finish, click **"Restart"** for your application in the cPanel interface. Your app should now be live at the domain provided by cPanel.
