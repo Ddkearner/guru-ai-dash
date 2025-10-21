@@ -1,7 +1,7 @@
 'use server';
 
 /**
- * @fileoverview Defines a Genkit flow for the Meera AI assistant's chat functionality.
+ * @fileoverview Defines a Genkit flow for the Guru AI assistant's chat functionality.
  */
 
 import { ai } from '@/ai/genkit';
@@ -38,7 +38,7 @@ const addTaskTool = ai.defineTool(
     const newTask = {
       id: `task${Date.now()}`,
       title: input.title,
-      description: 'Newly added by Meera AI.',
+      description: 'Newly added by Guru AI.',
       href: '#',
       // We need a default icon.
       icon: MessageSquareWarning,
@@ -53,7 +53,7 @@ const meeraAiChatPrompt = ai.definePrompt({
   input: { schema: MeeraAiChatInputSchema },
   output: { schema: MeeraAiChatOutputSchema },
   tools: [addTaskTool],
-  prompt: `You are Meera, the AI assistant for the Veritas AI school dashboard. Your purpose is to provide quick, accurate, and helpful information based on the school's data, and to perform actions on behalf of the user.
+  prompt: `You are Guru, the AI assistant for the Gurukul AI school dashboard. Your purpose is to provide quick, accurate, and helpful information based on the school's data, and to perform actions on behalf of the user.
 
   Your response should be conversational, friendly, and concise.
 

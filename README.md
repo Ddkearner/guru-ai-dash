@@ -1,8 +1,8 @@
-# Veritas AI - Advanced AI-Powered School ERP
+# Gurukul AI - Advanced AI-Powered School ERP
 
-Veritas AI is a modern, feature-rich Enterprise Resource Planning (ERP) system designed for educational institutions. It leverages the power of generative AI to provide deep insights, automate reporting, and offer actionable strategies to drive school growth. The dashboard is built with a focus on a clean, intuitive, and premium user experience.
+Gurukul AI is a modern, feature-rich Enterprise Resource Planning (ERP) system designed for educational institutions. It leverages the power of generative AI to provide deep insights, automate reporting, and offer actionable strategies to drive school growth. The dashboard is built with a focus on a clean, intuitive, and premium user experience.
 
-![Veritas AI Dashboard](https://storage.googleapis.com/studiostack/screenshots/veritas-ai-dashboard-v1.png)
+![Gurukul AI Dashboard](https://storage.googleapis.com/studiostack/screenshots/veritas-ai-dashboard-v1.png)
 
 ## Key Features
 
@@ -12,7 +12,7 @@ Veritas AI is a modern, feature-rich Enterprise Resource Planning (ERP) system d
 -   **Teacher Morale Assessment:** The "Teacher Pulse" board uses AI to assess staff morale based on performance metrics, providing actionable feedback for the principal.
 -   **Dropout Radar:** Identifies at-risk students based on performance decline and other factors, allowing for timely intervention.
 -   **Geotag Marketing Analysis:** Analyzes the geographic distribution of students and provides AI-driven marketing strategies tailored to specific locations.
--   **Meera AI Chat Assistant:** A powerful, copilot-style AI assistant that can answer questions, perform actions (like adding tasks), and present data using rich UI components directly in the chat.
+-   **Guru AI Chat Assistant:** A powerful, copilot-style AI assistant that can answer questions, perform actions (like adding tasks), and present data using rich UI components directly in the chat.
 -   **Comprehensive AI Reports:** Generate in-depth reports for the entire school or specific classes, covering everything from growth and admissions to academic performance and staff morale.
 
 ## Tech Stack

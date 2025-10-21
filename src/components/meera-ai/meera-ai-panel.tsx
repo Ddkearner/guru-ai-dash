@@ -123,11 +123,11 @@ export function MeeraAiPanel({
         { id: Date.now() + 1, sender: 'ai', content: result },
       ]);
     } catch (error) {
-      console.error('Meera AI Error:', error);
+      console.error('Guru AI Error:', error);
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: 'Could not get response from Meera AI. Please try again.',
+        description: 'Could not get response from Guru AI. Please try again.',
       });
       setMessages(newMessages); // Revert to previous state on error
     } finally {
@@ -172,7 +172,7 @@ export function MeeraAiPanel({
         <SheetHeader className="p-6 pb-4 border-b">
           <SheetTitle className="flex items-center gap-2 text-lg">
             <Sparkles className="w-5 h-5 text-primary" />
-            Meera AI
+            Guru AI
           </SheetTitle>
         </SheetHeader>
         <div className="flex-1 p-6 space-y-6 overflow-y-auto">
@@ -181,7 +181,7 @@ export function MeeraAiPanel({
               <div className="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-primary/10">
                 <Sparkles className="w-8 h-8 text-primary" />
               </div>
-              <h2 className="text-xl font-semibold">Hi there. I'm Meera.</h2>
+              <h2 className="text-xl font-semibold">Hi there. I'm Guru.</h2>
               <p className="mt-1 text-muted-foreground">
                 Your personal school operations assistant.
               </p>

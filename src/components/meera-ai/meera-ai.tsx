@@ -18,7 +18,7 @@ export function MeeraAi({ addTask }: { addTask: (task: Task) => void }) {
         onClick={() => setIsPanelOpen(true)}
       >
         <Sparkles className="w-7 h-7" />
-        <span className="sr-only">Open Meera AI</span>
+        <span className="sr-only">Open Guru AI</span>
       </Button>
       <MeeraAiPanel open={isPanelOpen} onOpenChange={setIsPanelOpen} addTask={addTask} />
     </>
