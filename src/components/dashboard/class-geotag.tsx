@@ -80,10 +80,23 @@ function LocationAnalysis({ locationName }: { locationName: string }) {
 
       {analysis && !isLoading && (
         <div className="space-y-6">
+           <div>
+            <h4 className="flex items-center gap-2 font-semibold">
+              <Users className="w-4 h-4 text-primary" />
+              Quick Summary
+            </h4>
+            <ul className="mt-2 space-y-1 list-disc list-inside">
+              {analysis.summaryPoints.map((point, index) => (
+                <li key={index} className="text-sm text-muted-foreground">
+                  {point}
+                </li>
+              ))}
+            </ul>
+          </div>
           <div>
             <h4 className="flex items-center gap-2 font-semibold">
               <Users className="w-4 h-4 text-primary" />
-              Demographic Analysis
+              Detailed Analysis
             </h4>
             <p className="mt-1 text-sm text-muted-foreground">
               {analysis.analysis}

@@ -74,10 +74,11 @@ export const GenerateSchoolReportOutputSchema = z.object({
     .describe(
       'A high-level executive summary of the current state of the school (or class) based on all provided data.'
     ),
+  strengths: z.array(z.string()).describe('A bulleted list of the key strengths identified from the data.'),
   problems: z
     .array(z.string())
     .describe(
-      'A list of the most critical problems or challenges identified from the data.'
+      'A bulleted list of the most critical problems or challenges identified from the data.'
     ),
   solutions: z
     .array(SolutionSchema)

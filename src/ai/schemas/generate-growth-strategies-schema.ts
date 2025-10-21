@@ -15,6 +15,7 @@ export const GenerateGrowthStrategiesInputSchema = z.object({
 export type GenerateGrowthStrategiesInput = z.infer<typeof GenerateGrowthStrategiesInputSchema>;
 
 export const GenerateGrowthStrategiesOutputSchema = z.object({
+  summaryPoints: z.array(z.string()).describe('A short, bulleted list of key findings related to the growth metric.'),
   analysis: z.string().describe('A detailed analysis of the growth trends based on the provided data, focusing on the active metric.'),
   suggestions: z.array(z.string()).describe('A list of actionable strategies, suggestions, and tricks to improve the chosen growth metric.'),
 });

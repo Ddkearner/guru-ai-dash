@@ -162,24 +162,31 @@ export function AdmissionFunnel() {
                 <X className="h-4 w-4" />
               </Button>
               <div>
-                <h5 className="font-semibold pr-8">Analysis</h5>
-                <p
-                  className={cn(
-                    'mt-1 text-sm text-muted-foreground transition-all duration-300',
-                    !isAnalysisExpanded && 'line-clamp-2'
-                  )}
-                >
-                  {analysis.analysis}
-                </p>
+                <h5 className="font-semibold pr-8">Key Insights</h5>
+                 <ul className="mt-2 space-y-1 list-disc list-inside">
+                    {analysis.summaryPoints.map((point, index) => (
+                      <li key={index} className="text-sm text-muted-foreground">
+                        {point}
+                      </li>
+                    ))}
+                  </ul>
               </div>
               <div
                 className={cn(
                   'space-y-4 transition-all duration-300',
                   isAnalysisExpanded
-                    ? 'max-h-96 opacity-100 mt-4'
+                    ? 'max-h-[1000px] opacity-100 mt-4'
                     : 'max-h-0 opacity-0 overflow-hidden'
                 )}
               >
+                <div>
+                  <h5 className="font-semibold">Detailed Analysis</h5>
+                  <p
+                    className='mt-1 text-sm text-muted-foreground transition-all duration-300'
+                  >
+                    {analysis.analysis}
+                  </p>
+                </div>
                 <div>
                   <h5 className="font-semibold">Suggested Strategies</h5>
                   <ul className="mt-2 space-y-2">
@@ -205,7 +212,7 @@ export function AdmissionFunnel() {
                     isAnalysisExpanded && 'rotate-180'
                   )}
                 />
-                {isAnalysisExpanded ? 'Show Less' : 'Show More'}
+                {isAnalysisExpanded ? 'Show Detailed Analysis' : 'Show Detailed Analysis'}
               </Button>
             </div>
           )}
@@ -214,5 +221,3 @@ export function AdmissionFunnel() {
     </Card>
   );
 }
-
-    

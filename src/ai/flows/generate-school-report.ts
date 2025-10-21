@@ -38,18 +38,19 @@ const generateSchoolReportPrompt = ai.definePrompt({
 
   **Your Task:**
 
-  1.  **Generate a Balanced Executive Summary:**
+  1.  **Generate a Balanced Executive Summary (summary):**
       - Write a concise, high-level summary of the school's (or class's) overall health.
       - The summary MUST cover both key achievements and critical challenges.
       - Start with a clear, impactful statement. For example, "Overall, the school shows strong financial growth and teacher morale, but significant bottlenecks in the admission funnel and concerning trends in Class 9 academic performance require immediate attention."
 
-  2.  **Identify Critical Problems & Key Strengths:**
+  2.  **Identify Critical Problems & Key Strengths (problems and strengths):**
       - Analyze all the data to identify the 2-3 most critical problems and 2-3 key strengths.
+      - These should be presented as bullet points.
       - Connect the dots between different data points.
-      -   **Example Problem:** "The 12% drop in conversion from 'Campus Visits' to 'Forms Filled' correlates with a high number of parent complaints about Mr. Singh, suggesting his poor communication during tours may be deterring prospective parents."
+      -   **Example Problem:** "The 12% drop in conversion from 'Campus Visits' to 'Forms Filled' correlates with a high number of parent complaints about Mr. Singh, suggesting his poor communication during tours may be a factor."
       -   **Example Strength:** "Fee collection is consistently strong, growing by 15% over the last quarter, indicating high parent satisfaction and efficient administrative processes."
 
-  3.  **Propose Actionable Solutions:**
+  3.  **Propose Actionable Solutions (solutions):**
       - For each identified problem, provide a clear, creative, and "ground-ready" solution.
       - Each solution should have a \`title\` and a detailed \`description\`.
       - The solutions should be highly practical and directly address the problems.

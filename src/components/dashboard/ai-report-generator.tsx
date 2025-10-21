@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import { Loader2, FileText } from 'lucide-react';
+import { Loader2, FileText, CheckCircle, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { generateSchoolReport } from '@/ai/flows/generate-school-report';
 import type { GenerateSchoolReportOutput } from '@/ai/schemas/generate-school-report-schema';
@@ -74,7 +74,7 @@ export function AiReportGenerator({
       // Reset report when dialog is closed
       setReport(null);
     }
-  }, [open]);
+  }, [open, isLoading, report]);
 
 
   return (
@@ -105,37 +105,55 @@ export function AiReportGenerator({
                     {report.summary}
                   </p>
                 </div>
-                <div>
-                  <h3 className="mb-2 text-lg font-semibold font-headline">
-                    Key Challenges Identified
-                  </h3>
-                  <ul className="space-y-2 list-disc list-inside">
-                    {report.problems.map((problem, i) => (
-                      <li key={i} className="text-muted-foreground">
-                        {problem}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+
+                 <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <h3 className="mb-2 text-lg font-semibold font-headline flex items-center gap-2">
+                        <CheckCircle className="text-success" />
+                        Key Strengths
+                      </h3>
+                      <ul className="space-y-2 list-disc list-inside">
+                        {report.strengths.map((strength, i) => (
+                          <li key={i} className="text-muted-foreground">
+                            {strength}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <h3 className="mb-2 text-lg font-semibold font-headline flex items-center gap-2">
+                         <AlertTriangle className="text-destructive" />
+                        Key Challenges
+                      </h3>
+                      <ul className="space-y-2 list-disc list-inside">
+                        {report.problems.map((problem, i) => (
+                          <li key={i} className="text-muted-foreground">
+                            {problem}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                 </div>
+
                 <div>
                   <h3 className="mb-2 text-lg font-semibold font-headline">
                     Strategic Recommendations
                   </h3>
-                  <ul className="space-y-3">
+                  <div className="space-y-3">
                     {report.solutions.map((solution, i) => (
-                      <li
+                      <div
                         key={i}
-                        className="p-3 border rounded-md bg-secondary/50"
+                        className="p-4 border rounded-lg bg-secondary/50"
                       >
                         <p className="font-semibold text-foreground">
                           {solution.title}
                         </p>
-                        <p className="mt-1 text-muted-foreground">
+                        <p className="mt-1 text-muted-foreground whitespace-pre-wrap">
                           {solution.description}
                         </p>
-                      </li>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
                 </div>
               </div>
             )}

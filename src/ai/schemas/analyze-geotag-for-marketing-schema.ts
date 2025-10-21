@@ -7,6 +7,7 @@ export type AnalyzeGeotagForMarketingInput = z.infer<typeof AnalyzeGeotagForMark
 
 
 export const AnalyzeGeotagForMarketingOutputSchema = z.object({
+  summaryPoints: z.array(z.string()).describe('A short, bulleted list of key strategic insights for the location.'),
   analysis: z.string().describe('A brief analysis of the location\'s demographic and psychographic profile relevant to school admissions.'),
   partnershipOpportunities: z.array(z.string()).describe('A list of potential partnership opportunities with local businesses or communities.'),
   marketingSuggestions: z.array(z.string()).describe('A list of tailored marketing campaign ideas for the specified location.'),

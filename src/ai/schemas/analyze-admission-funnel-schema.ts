@@ -12,6 +12,7 @@ export const AnalyzeAdmissionFunnelInputSchema = z.object({
 export type AnalyzeAdmissionFunnelInput = z.infer<typeof AnalyzeAdmissionFunnelInputSchema>;
 
 export const AnalyzeAdmissionFunnelOutputSchema = z.object({
+  summaryPoints: z.array(z.string()).describe('A short, bulleted list of the most critical insights from the funnel analysis.'),
   analysis: z.string().describe('A detailed analysis of the admission funnel, comparing this month to last month and identifying key bottlenecks and successes.'),
   suggestions: z.array(z.string()).describe('A list of actionable marketing strategies and suggestions to improve conversion rates.'),
 });
