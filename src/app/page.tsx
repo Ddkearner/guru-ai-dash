@@ -35,7 +35,7 @@ export default function Home() {
 
   return (
     <SidebarProvider>
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="flex min-h-screen bg-background">
       <Sidebar>
         {/* Sidebar content will go here */}
       </Sidebar>
