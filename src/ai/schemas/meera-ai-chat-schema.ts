@@ -38,7 +38,7 @@ const GeotagSchema = z.object({
     students: z.number()
 });
 
-const TaskSchema = z.object({
+export const TaskSchema = z.object({
     id: z.string(),
     title: z.string(),
     description: z.string(),
@@ -71,9 +71,17 @@ const TodoListResponseSchema = z.object({
     }),
 });
 
+const ConfirmAddTaskResponseSchema = z.object({
+    component: z.enum(['confirm-add-task']),
+    props: z.object({
+        task: TaskSchema.describe('The task object to be confirmed for addition.'),
+    }),
+});
+
 export const MeeraAiChatOutputSchema = z.union([
     TextResponseSchema,
     TodoListResponseSchema,
+    ConfirmAddTaskResponseSchema,
 ]);
 
 export type MeeraAiChatOutput = z.infer<typeof MeeraAiChatOutputSchema>;

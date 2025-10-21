@@ -1,3 +1,5 @@
+'use client';
+import { useState } from 'react';
 import { DashboardHeader } from '@/components/dashboard/header';
 import { SummaryCards } from '@/components/dashboard/summary-cards';
 import { TodoList } from '@/components/dashboard/todo-list';
@@ -9,8 +11,13 @@ import { ClassGeotag } from '@/components/dashboard/class-geotag';
 import { ExamHeatmap } from '@/components/dashboard/exam-heatmap';
 import { DropoutRadar } from '@/components/dashboard/dropout-radar';
 import { TeacherPulse } from '@/components/dashboard/teacher-pulse';
+import { todoTasks as initialTodoTasks, Task } from '@/lib/school-data';
 
 export default function Home() {
+  const [tasks, setTasks] = useState<Task[]>(initialTodoTasks);
+  const addTask = (newTask: Task) => {
+    setTasks(prevTasks => [newTask, ...prevTasks]);
+  };
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <DashboardHeader />
@@ -21,7 +28,7 @@ export default function Home() {
           </div>
 
           <div className="lg:col-span-2">
-            <TodoList />
+            <TodoList tasks={tasks} setTasks={setTasks} />
           </div>
 
           <div className="lg:col-span-2">

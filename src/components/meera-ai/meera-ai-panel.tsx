@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -66,8 +66,24 @@ function TodoListComponent({ tasks: initialTasks }: { tasks: Task[] }) {
   );
 }
 
+const ConfirmAddTaskComponent = ({ task, onConfirm }: { task: Task; onConfirm: () => void }) => {
+  return (
+    <div className="p-3 rounded-lg border bg-background/50">
+        <p className="text-sm font-medium">Ready to add this task?</p>
+        <div className="my-2 p-2 border-l-2 border-primary">
+            <p className="font-semibold">{task.title}</p>
+            <p className="text-xs text-muted-foreground">{task.description}</p>
+        </div>
+        <Button onClick={onConfirm} size="sm" className="w-full">
+            Yes, add task
+        </Button>
+    </div>
+  );
+}
+
 const componentMap = {
   'todo-list': TodoListComponent,
+  'confirm-add-task': ConfirmAddTaskComponent,
 };
 
 export function MeeraAiPanel({
@@ -88,7 +104,7 @@ export function MeeraAiPanel({
 
     const newMessages: Message[] = [
       ...messages,
-      { id: Date.now(), text, sender: 'user', content: text },
+      { id: Date.now(), sender: 'user', content: text },
     ];
     setMessages(newMessages);
     setInput('');
@@ -112,6 +128,25 @@ export function MeeraAiPanel({
       setIsLoading(false);
     }
   };
+  
+  const handleConfirmAddTask = (task: Task) => {
+    // This is a placeholder. In a real app, you'd lift this state up.
+    console.log("Task confirmed:", task);
+    toast({
+        title: "Task Added!",
+        description: `"${task.title}" has been added to your to-do list.`,
+    });
+    // Remove the confirmation message and add a confirmation text
+    setMessages(prev => [
+        ...prev.filter(m => {
+            if (typeof m.content !== 'string' && m.content.component === 'confirm-add-task') {
+                return false;
+            }
+            return true;
+        }),
+        { id: Date.now(), sender: 'ai', content: { component: 'text', props: { text: `Great, I've added "${task.title}" to your to-do list.` } } }
+    ]);
+  }
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -159,7 +194,13 @@ export function MeeraAiPanel({
                     ) : (
                       (() => {
                         const Component = componentMap[msg.content.component as keyof typeof componentMap];
-                        return Component ? <Component {...(msg.content.props as any)} /> : null;
+                        const props: any = msg.content.props;
+
+                        if (msg.content.component === 'confirm-add-task') {
+                            props.onConfirm = () => handleConfirmAddTask(props.task);
+                        }
+
+                        return Component ? <Component {...props} /> : null;
                       })()
                     )}
                   </div>

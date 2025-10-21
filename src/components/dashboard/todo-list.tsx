@@ -1,5 +1,4 @@
 'use client';
-import { useState } from 'react';
 import Link from 'next/link';
 import {
   Card,
@@ -9,10 +8,9 @@ import {
   CardDescription,
 } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { todoTasks, Task } from '@/lib/school-data';
+import { Task } from '@/lib/school-data';
 
-export function TodoList() {
-  const [tasks, setTasks] = useState<Task[]>(todoTasks);
+export function TodoList({ tasks, setTasks }: { tasks: Task[], setTasks: (tasks: Task[]) => void }) {
 
   const handleTaskCompletion = (taskId: string) => {
     // Optimistically update UI and remove after a delay
@@ -21,7 +19,7 @@ export function TodoList() {
       taskElement.classList.add('opacity-0', 'translate-x-full');
     }
     setTimeout(() => {
-      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+      setTasks(tasks.filter((task) => task.id !== taskId));
     }, 300);
   };
 
@@ -62,7 +60,6 @@ export function TodoList() {
                     </p>
                   </Link>
                 </div>
-                <task.icon className="w-5 h-5 ml-auto text-muted-foreground shrink-0" />
               </div>
             ))
           ) : (
