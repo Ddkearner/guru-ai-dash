@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Card,
   CardContent,
@@ -46,73 +46,44 @@ function FunnelChart({ data }: { data: FunnelStage[] }) {
   };
 
   const stageColors = [
-    'bg-[#4A90E2]', // Blue
-    'bg-[#7E6EF2]', // Purple
-    'bg-[#F5A623]', // Orange
-    'bg-[#F8E71C]', // Yellow
-    'bg-[#50E3C2]', // Green
+    'bg-blue-500',
+    'bg-purple-500',
+    'bg-orange-500',
+    'bg-yellow-400',
+    'bg-teal-500',
   ];
-  
-  const stageTextColors = [
-    'text-white',
-    'text-white',
-    'text-white',
-    'text-gray-800',
-    'text-gray-800',
-  ];
-
 
   return (
-    <div className="w-full flex flex-col items-center gap-2">
+    <div className="w-full flex flex-col items-center space-y-2">
       {data.map((item, index) => {
         const widthPercentage = maxVal > 0 ? (item.value / maxVal) * 100 : 0;
-        const nextValue =
-          index < data.length - 1 ? data[index + 1].value : 0;
-
         const conversion =
-          index < data.length - 1 ? getConversionRate(item.value, nextValue) : 0;
-        
-        const nextWidthPercentage =
           index < data.length - 1
-            ? maxVal > 0
-              ? (nextValue / maxVal) * 100
-              : 0
-            : widthPercentage * 0.8;
-
+            ? getConversionRate(item.value, data[index + 1].value)
+            : 0;
 
         return (
-          <div
-            key={item.stage}
-            className="relative flex flex-col items-center w-full"
-          >
-            {/* Funnel Segment */}
-             <div className='relative' style={{width: `${widthPercentage}%`, minWidth: '120px' }}>
-                <div className='absolute inset-x-0 -top-2 h-4 bg-black/10 rounded-t-full' />
-                <div className={`${stageColors[index]} h-16 w-full flex items-center justify-center px-4`}>
-                    <div className="flex items-center gap-4 text-foreground w-full">
-                        <div className={`p-2 rounded-full bg-white/20 ${stageTextColors[index]}`}>
-                        {stageIcons[item.stage as keyof typeof stageIcons]}
-                        </div>
-                        <div className="flex-1 text-left">
-                        <p className={`text-sm font-medium ${stageTextColors[index]}`}>{item.stage}</p>
-                        <p className={`text-xl font-bold ${stageTextColors[index]}`}>{item.value}</p>
-                        </div>
-                    </div>
+          <div key={item.stage} className="w-full flex flex-col items-center">
+            <div
+              className={`${stageColors[index]} rounded-lg shadow-md h-16 flex items-center justify-between px-4 transition-all duration-300`}
+              style={{ width: `${Math.max(widthPercentage, 20)}%` }}
+            >
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-white/20 rounded-full">
+                  {React.cloneElement(stageIcons[item.stage as keyof typeof stageIcons], { className: 'w-5 h-5 text-white' })}
                 </div>
-                 <div className='absolute inset-x-0 -bottom-2 h-4 bg-black/20 rounded-b-full' />
+                <span className="font-semibold text-white">{item.stage}</span>
+              </div>
+              <span className="text-xl font-bold text-white">{item.value}</span>
             </div>
 
-            {/* Connector / Conversion Rate */}
             {index < data.length - 1 && (
-              <div className="flex flex-col items-center w-full">
-                 <div className="h-8 w-px bg-border my-2" />
-                 <div
-                  className="relative h-10 flex items-center justify-center -my-4 z-10"
-                >
-                  <div className="text-xs font-semibold text-success bg-background px-2 py-1 rounded-full border shadow-sm">
-                    {conversion.toFixed(1)}% Conv.
-                  </div>
+              <div className="flex items-center gap-2 my-2">
+                <div className="h-6 w-px bg-border" />
+                <div className="text-xs font-semibold text-success bg-background px-2 py-0.5 rounded-full border shadow-sm">
+                  {conversion.toFixed(1)}% Conv.
                 </div>
+                <div className="h-6 w-px bg-border" />
               </div>
             )}
           </div>
