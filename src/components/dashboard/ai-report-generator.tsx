@@ -22,7 +22,7 @@ import { generateSchoolReport } from '@/ai/flows/generate-school-report';
 import type { GenerateSchoolReportOutput } from '@/ai/schemas/generate-school-report-schema';
 import * as Data from '@/lib/school-data';
 
-type ReportScope = 'school' | 'Class 10' | 'Class 9';
+type ReportScope = 'school' | 'Class 10' | 'Class 9' | 'Class 8';
 
 export function AiReportGenerator() {
   const [open, setOpen] = useState(false);
@@ -84,6 +84,10 @@ export function AiReportGenerator() {
           <DropdownMenuItem onClick={() => handleGenerateReport('Class 9')}>
             <Users className="w-4 h-4 mr-2" />
             Class 9 Report
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => handleGenerateReport('Class 8')}>
+            <Users className="w-4 h-4 mr-2" />
+            Class 8 Report
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
